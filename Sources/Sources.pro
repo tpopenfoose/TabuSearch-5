@@ -1,7 +1,10 @@
-
 TEMPLATE = lib
-CONFIG += shared
-INCLUDEPATH += ../files
+#CONFIG += shared
+LIBS += -L../Interfaces/debug -lInterfaces
+INCLUDEPATH += \
+    ../files \
+    ../Interfaces
+
 HEADERS  += \
     taskthread.h \
     taskmainwindow.h \
@@ -22,6 +25,7 @@ HEADERS  += \
     configtabfour.h \
     configtab.h \
     board.h \
+    circle.h
 
 SOURCES += \
     taskthread.cpp \
@@ -41,4 +45,5 @@ SOURCES += \
     configtabone.cpp \
     configtabfour.cpp \
     configtab.cpp \
-    board.cpp
+    board.cpp \
+    circle.cpp

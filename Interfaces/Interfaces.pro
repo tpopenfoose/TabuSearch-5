@@ -1,2 +1,7 @@
 TEMPLATE = lib
-HEADERS = board.h
+CONFIG += shared
+HEADERS += \
+    shape.h
+
+SOURCES += \
+    shape.cpp

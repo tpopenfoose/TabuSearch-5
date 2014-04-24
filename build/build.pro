@@ -1,6 +1,8 @@
 QT       += core gui
-INCLUDEPATH = ../Sources
+INCLUDEPATH =+ \
+    ../Sources
+
 TEMPLATE = app
 SOURCES += main.cpp
-LIBS += -L../sources/debug -L../files/debug -lfiles -lsources
+LIBS += -L../Sources/debug -L../files/debug -lSources -lfiles
 TARGET = ../TabuSearch
