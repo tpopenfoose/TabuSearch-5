@@ -1,7 +1,7 @@
 #include "circle.h"
 #include <QPen>
 
-Circle::Circle() : Shape(Qt::red)
+Circle::Circle() : NotRotatableShape(Qt::red)
 {
 }
 

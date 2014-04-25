@@ -1,8 +1,8 @@
 #ifndef SQUARE_H
 #define SQUARE_H
-#include "shape.h"
+#include "notrotatableshape.h"
 
-class Square : public Shape
+class Square : public NotRotatableShape
 {
 public:
     Square();

@@ -1,7 +1,7 @@
 #include "square.h"
 #include <QPen>
 
-Square::Square() : Shape(Qt::green)
+Square::Square() : NotRotatableShape(Qt::green)
 {
 }
 

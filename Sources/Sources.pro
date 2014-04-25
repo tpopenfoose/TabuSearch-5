@@ -1,9 +1,9 @@
 TEMPLATE = lib
 CONFIG += staticlib
-LIBS += -L../Interfaces/debug -lInterfaces
+LIBS += -L../Shapes/debug -lShapes
 INCLUDEPATH += \
     ../files \
-    ../Interfaces
+    ../Shapes
 
 HEADERS  += \
     taskthread.h \
@@ -25,10 +25,6 @@ HEADERS  += \
     configtabfour.h \
     configtab.h \
     board.h \
-    circle.h \
-    square.h \
-    triangle.h \
-    rectangle.h \
     generator.h
 
 SOURCES += \
@@ -50,10 +46,6 @@ SOURCES += \
     configtabfour.cpp \
     configtab.cpp \
     board.cpp \
-    circle.cpp \
-    square.cpp \
-    triangle.cpp \
-    rectangle.cpp \
     generator.cpp
 
 QT += widgets

@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     files \
-    Interfaces \
+    Shapes \
     Sources \
     tests \
     build

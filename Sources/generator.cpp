@@ -17,31 +17,47 @@ std::vector<Shape> Generator::generate(const ConfigData& p_data)
     std::vector<Shape> vector;
 
     for(int i = 0; i < m_figures_count; i++) {
-        switch(qrand() % 4)
+        switch(qrand() % 2)
         {
             case 0: {
-                Square shape;
-                vector.push_back(shape);
+                vector.push_back(draw_rotatable_shape());
             } break;
 
             case 1: {
-                Circle shape;
-                vector.push_back(shape);
-            } break;
-
-            case 2: {
-                Rectangle shape(0);
-                vector.push_back(shape);
-            } break;
-
-            case 3: {
-                Triangle shape(0);
-                vector.push_back(shape);
+                vector.push_back(draw_not_rotatable_shape());
             } break;
         }
     }
 
     return vector;
+}
+
+RotatableShape Generator::draw_rotatable_shape()
+{
+    switch(qrand() % 2)
+    {
+        case 0: {
+            return Triangle(0);
+        } break;
+
+        case 1: {
+            return Rectangle(0);
+        } break;
+    }
+}
+
+NotRotatableShape Generator::draw_not_rotatable_shape()
+{
+    switch(qrand() % 2)
+    {
+        case 0: {
+            return Circle();
+        } break;
+
+        case 1: {
+            return Square();
+        } break;
+    }
 }
 
 void Generator::calculate_amount(const ConfigData& p_data)
