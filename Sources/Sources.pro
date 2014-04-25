@@ -1,5 +1,5 @@
 TEMPLATE = lib
-#CONFIG += shared
+CONFIG += staticlib
 LIBS += -L../Interfaces/debug -lInterfaces
 INCLUDEPATH += \
     ../files \
