@@ -3,6 +3,7 @@
 
 #include "globalne.h"
 #include <QtGui>
+#include <QWidget>
 
 class Board : public QWidget
 {

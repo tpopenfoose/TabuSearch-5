@@ -4,6 +4,10 @@
 #include <QtGui>
 #include "globalne.h"
 #include "configtab.h"
+#include <QStackedLayout>
+#include <QTabBar>
+#include <QPushButton>
+#include <QFrame>
 
 class ConfigWindow : public QFrame
 {

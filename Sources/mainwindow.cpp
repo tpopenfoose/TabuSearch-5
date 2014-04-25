@@ -4,6 +4,9 @@
 
 #include <iostream>
 using namespace std;
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
 
 //extern SharedMemory memory;
 
@@ -53,7 +56,8 @@ void MainWindow::create_connections(void)
 
 void MainWindow::closeEvent( QCloseEvent * event)
 {
-    qApp->closeAllWindows();
+    //qApp->
+   // qApp->closeAllWindows();
     qApp->quit();
 }
 

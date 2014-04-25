@@ -2,6 +2,7 @@
 #define MAINSCREEN_H
 
 #include <QtGui>
+#include <QScrollArea>
 
 class TaskLayout;
 

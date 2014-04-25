@@ -9,8 +9,14 @@
 #include "inserter.h"
 #include "taskthread.h"
 #include <QMessageBox>
+#include <QScrollArea>
+#include <QFormLayout>
+#include <QDockWidget>
+#include <QAction>
+#include <QFileDialog>
 #include "sharedmemory.h"
 #include "files.h"
+//#include <QSignalTransition>
 
 #include <iostream>
 using namespace std;

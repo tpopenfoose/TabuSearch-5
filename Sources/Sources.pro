@@ -47,3 +47,5 @@ SOURCES += \
     configtab.cpp \
     board.cpp \
     circle.cpp
+
+QT += widgets

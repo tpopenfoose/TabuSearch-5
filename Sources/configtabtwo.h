@@ -3,6 +3,10 @@
 
 #include <QtGui>
 #include "configtab.h"
+#include <QSlider>
+#include <QLineEdit>
+#include <QLabel>
+#include <QGridLayout>
 
 class ConfigTabTwo : public ConfigTab
 {

@@ -1,4 +1,5 @@
 #include "board.h"
+#include <QStyleOption>
 
 Board::Board(QWidget *parent) : QWidget(parent)
 {

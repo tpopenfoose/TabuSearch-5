@@ -3,6 +3,11 @@
 
 #include <QtGui>
 #include "globalne.h"
+#include <QToolBar>
+#include <QLCDNumber>
+#include <QProgressBar>
+#include <QLabel>
+#include <QMainWindow>
 
 class Task;
 

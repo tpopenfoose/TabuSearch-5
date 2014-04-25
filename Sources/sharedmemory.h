@@ -3,6 +3,8 @@
 
 #include <QtGui>
 #include "globalne.h"
+#include <QMainWindow>
+#include <QAbstractButton>
 
 class Task;
 class TaskButtonGroup;

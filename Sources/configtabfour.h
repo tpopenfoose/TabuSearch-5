@@ -4,6 +4,11 @@
 #include <QtGui>
 #include "configtab.h"
 #include "globalne.h"
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QLabel>
+#include <QSlider>
+#include <QGridLayout>
 
 class CheckBoxGroup : public QButtonGroup
 {

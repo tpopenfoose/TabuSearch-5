@@ -6,6 +6,8 @@
 #include "task.h"
 
 #include "iostream"
+#include <QApplication>
+#include <QDesktopWidget>
 
 using namespace std;
 

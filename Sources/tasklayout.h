@@ -2,6 +2,8 @@
 #define TASKLAYOUT_H
 
 #include <QtGui>
+#include <QLayoutItem>
+#include <QLayout>
 
 class TaskLayout : public QLayout
 {

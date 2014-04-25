@@ -5,6 +5,8 @@
 
 #include "QString"
 #include <iostream>
+#include <QTextCodec>
+#include <QApplication>
 
 using namespace std;
 
@@ -22,7 +24,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+        //QTextCodec::setCodecForLocale()
+        //QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
         QApplication app(argc, argv);
         Q_INIT_RESOURCE(files);
         MainWindow mainwindow;

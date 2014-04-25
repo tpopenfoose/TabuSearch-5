@@ -4,6 +4,9 @@
 #include <QtGui>
 #include "configtab.h"
 #include "globalne.h"
+#include <QLabel>
+#include <QLineEdit>
+#include <QGridLayout>
 
 
 class ConfigTabOne : public ConfigTab
