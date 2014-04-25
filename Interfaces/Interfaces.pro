@@ -1,7 +1,9 @@
 TEMPLATE = lib
 CONFIG += staticlib
 HEADERS += \
-    shape.h
+    shape.h \
+    rotatableshape.h
 
 SOURCES += \
-    shape.cpp
+    shape.cpp \
+    rotatableshape.cpp

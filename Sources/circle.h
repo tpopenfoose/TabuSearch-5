@@ -6,7 +6,7 @@ class Circle : public Shape
 {
 public:
     Circle();
-    virtual void draw(QPainter &painter);
+    virtual void draw(QPainter &, int, int);
 };
 
 #endif // CIRCLE_H

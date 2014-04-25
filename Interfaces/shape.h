@@ -7,11 +7,10 @@ class Shape
 {
 public:
     Shape(QColor);
-    virtual void draw(QPainter & painter)=0;
-private:
+    virtual void draw(QPainter & p_painter, int p_size, int p_pen_width);
+protected:
     int m_x;
     int m_y;
-    int m_angle;
     QColor m_color;
 };
 

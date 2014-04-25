@@ -25,7 +25,11 @@ HEADERS  += \
     configtabfour.h \
     configtab.h \
     board.h \
-    circle.h
+    circle.h \
+    square.h \
+    triangle.h \
+    rectangle.h \
+    generator.h
 
 SOURCES += \
     taskthread.cpp \
@@ -46,6 +50,10 @@ SOURCES += \
     configtabfour.cpp \
     configtab.cpp \
     board.cpp \
-    circle.cpp
+    circle.cpp \
+    square.cpp \
+    triangle.cpp \
+    rectangle.cpp \
+    generator.cpp
 
 QT += widgets
