@@ -1,51 +1,40 @@
 TEMPLATE = lib
 CONFIG += staticlib
-LIBS += -L../Shapes/debug -lShapes
+LIBS += -L../Shapes/debug -lShapes -L../UserInterface/debug -lUserInterface
 INCLUDEPATH += \
     ../files \
-    ../Shapes
+    ../Shapes \
+    ../UserInterface
 
 HEADERS  += \
+    tabusearch.h \
+    inserter.h \
+    globalne.h \
+    generator.h \
+    mainwindow.h \
+    mainscreen.h \
     taskthread.h \
     taskmainwindow.h \
     tasklayout.h \
     taskbuttongroup.h \
     taskbutton.h \
     task.h \
-    tabusearch.h \
     sharedmemory.h \
-    mainwindow.h \
-    mainscreen.h \
-    inserter.h \
-    globalne.h \
-    configwindow.h \
-    configtabtwo.h \
-    configtabthree.h \
-    configtabone.h \
-    configtabfour.h \
-    configtab.h \
-    board.h \
-    generator.h
+    board.h
 
 SOURCES += \
+    tabusearch.cpp \
+    inserter.cpp \
+    generator.cpp \
+    mainwindow.cpp \
+    mainscreen.cpp \
     taskthread.cpp \
     taskmainwindow.cpp \
     tasklayout.cpp \
     taskbuttongroup.cpp \
     taskbutton.cpp \
     task.cpp \
-    tabusearch.cpp \
     sharedmemory.cpp \
-    mainwindow.cpp \
-    mainscreen.cpp \
-    inserter.cpp \
-    configwindow.cpp \
-    configtabtwo.cpp \
-    configtabthree.cpp \
-    configtabone.cpp \
-    configtabfour.cpp \
-    configtab.cpp \
-    board.cpp \
-    generator.cpp
+    board.cpp
 
 QT += widgets

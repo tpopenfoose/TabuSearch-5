@@ -4,6 +4,7 @@ INCLUDEPATH =+ \
 
 TEMPLATE = app
 SOURCES += main.cpp
-LIBS += -L../Sources/debug -L../files/debug -lSources -lfiles
+LIBS += -L../files/debug -L../Sources/debug -L../UserInterface/debug \
+    -lfiles -lSources -lUserInterface
 TARGET = ../TabuSearch
 QT += widgets

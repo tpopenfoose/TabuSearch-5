@@ -55,7 +55,6 @@ private:
     QVector< QVector<Figure> > Baza_input;
     QVector< QVector<Figure> > BazaTabu_input;
     QVector< QVector<Figure> > BazaTabu_output;
-    //QVector< QVector<Figure> > Base_all;
 
     void calculateFigures();
 

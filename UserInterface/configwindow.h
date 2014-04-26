@@ -21,7 +21,7 @@ public:
     
 private:
 
-    static const int tabsCount = 4;
+    static const int tabsCount = 3;
 
     QStackedLayout *layouts;
     QGridLayout *mainlayout;

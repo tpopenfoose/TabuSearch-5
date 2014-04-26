@@ -455,14 +455,6 @@ void TaskMainWindow::save_data(void)
     str+=QString::number(tsf.data.tabutime,10);
     str+=";";
 
-    for(int i  = 0; i < 4; i++)
-    {
-        str+=QString::number(tsf.data.figures[i].checked,10);
-        str+=";";
-        str+=QString::number(tsf.data.figures[i].procent,10);
-        str+=";";
-    }
-
     stream<<str<<endl;
     stream<<QString::number(tsf.all.size(),10)<<endl;
 
@@ -585,15 +577,6 @@ void TaskMainWindow::read_data(void)
     temp.data.iteration = line.section(';',4,4).toInt(&ok,10);
     temp.data.tabusize = line.section(';',5,5).toInt(&ok,10);
     temp.data.tabutime = line.section(';',6,6).toInt(&ok,10);
-
-    int end = 7;
-
-    for(int i  = 0; i < 4; i++)
-    {
-        temp.data.figures[i].checked = line.section(';',end,end).toInt(&ok,10);
-        temp.data.figures[i].procent = line.section(';',end+1,end+1).toInt(&ok,10);
-        end+=2;
-    }
 
     Taskparent->config->loadConfig(temp.data);
 

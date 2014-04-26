@@ -1,14 +1,10 @@
 #include "configwindow.h"
-#include "sharedmemory.h"
 #include "configtabone.h"
 #include "configtabtwo.h"
 #include "configtabthree.h"
-#include "configtabfour.h"
 #include <iostream>
 
 using namespace std;
-
-extern SharedMemory memory;
 
 ConfigWindow::ConfigWindow(QWidget *parent) :
     QFrame(parent)
@@ -27,7 +23,6 @@ void ConfigWindow::createMainLayout(void)
     tabs[0] = new ConfigTabOne(this);
     tabs[1] = new ConfigTabTwo(this);
     tabs[2] = new ConfigTabThree(this);
-    tabs[3] = new ConfigTabFour(this);
 
     layouts = new QStackedLayout;
 
@@ -49,7 +44,6 @@ void ConfigWindow::createMainUI(void)
     tabBar->addTab("Dane");
     tabBar->addTab("Algorytm");
     tabBar->addTab("Lista Tabu");
-    tabBar->addTab("Figury");
     tabBar->setFixedSize(250,25);
 
     cancelButton = new QPushButton(tr("Cancel"));

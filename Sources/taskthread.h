@@ -31,8 +31,6 @@ private:
     TabuSearch *engine;
     QVector<Figure> result;
 
-    //QVector< QVector<Figure> > TSB;
-
 friend class TabuSearch;
 friend class TaskMainWindow;
 friend class Task;

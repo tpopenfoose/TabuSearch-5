@@ -81,7 +81,6 @@ private:
 
     Task* Taskparent;
     TSF tsf;
-    //QVector< QVector<Figure> > TSB;
     QVector<Figure> result;
 
 

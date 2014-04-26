@@ -37,23 +37,7 @@ void TabuSearch::generateFirstResult(ConfigData data)
         c.x = 0;
         c.y = 0;
         c.pozycja = qrand() % 4;
-
-        while(true)
-        {
-            while(true)
-            {
-                c.figureName = (FigureName)(qrand() % 4);
-
-                if(data.figures[c.figureName].checked)
-                    break;
-            }
-
-            int prop = (qrand() % 100)+1;
-
-            if(data.figures[c.figureName].procent >= prop)
-                break;
-        }
-
+        c.figureName = (FigureName)(qrand() % 4);
         vector.push_back(c);
     }
 
@@ -419,22 +403,7 @@ TSF TabuSearch::generateFirstResultCommandLine(ConfigData data)
         c.y = 0;
         c.pozycja = qrand() % 4;
 
-        while(true)
-        {
-            while(true)
-            {
-                c.figureName = (FigureName)(qrand() % 4);
-
-                if(data.figures[c.figureName].checked)
-                    break;
-            }
-
-            int prop = (qrand() % 100)+1;
-
-            if(data.figures[c.figureName].procent >= prop)
-                break;
-        }
-
+        c.figureName = (FigureName)(qrand() % 4);
         vector.push_back(c);
     }
 

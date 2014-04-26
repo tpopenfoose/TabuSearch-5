@@ -4,12 +4,6 @@
 #include <QVector>
 #include <QString>
 
-struct FigureData
-{
-    bool checked;
-    int procent;
-};
-
 class Point
 {
 public:
@@ -30,8 +24,6 @@ struct ConfigData
     int iteration;
     int tabusize;
     int tabutime;
-
-    FigureData figures[4];
 };
 
 enum FigureName
