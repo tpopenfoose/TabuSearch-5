@@ -19,21 +19,9 @@ protected:
 
 private:
 
-   QPainter *painter;
-   QPen pen;
-   Figure f;
-   int x;
-   int y;
-
-   int penwidth;
-   int halfpen;
+   QPainter painter;
 
    TSF tsf;
-
-   void drawEclipse(void);
-   void drawRectangle(void);
-   void drawSquare(void);
-   void drawTriangle(void);
 
 public slots:
 

@@ -1,8 +1,8 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
-#include "notrotatableshape.h"
+#include "shape.h"
 
-class Circle : public NotRotatableShape
+class Circle : public Shape
 {
 public:
     Circle();

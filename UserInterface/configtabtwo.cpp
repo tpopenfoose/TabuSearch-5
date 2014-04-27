@@ -1,10 +1,11 @@
 #include "configtabtwo.h"
+#include "defaultconfig.h"
 
 ConfigTabTwo::ConfigTabTwo(QWidget *parent) :
     ConfigTab(parent)
 {
-    iterationCount = 50;
-    changeCount = 5;
+    iterationCount = g_iteration_count;
+    changeCount = g_change_count;
 
     createLayout();
 
@@ -29,7 +30,7 @@ void ConfigTabTwo::createLayout(void)
 
 void ConfigTabTwo::createUI(void)
 {
-    iterationLabel = new QLabel(tr("Ilość iteracji"));
+    iterationLabel = new QLabel(g_iteration_count_name.c_str());
 
     iterationLineEdit = new QLineEdit(QString::number(iterationCount,10));
     iterationLineEdit->setFixedSize(60,25);
@@ -40,13 +41,13 @@ void ConfigTabTwo::createUI(void)
     chargePercentageSlider->setSingleStep(1);
     chargePercentageSlider->setValue(changeCount);
 
-    chargePercentageLabel = new QLabel(tr("Wiekość sąsiedztwa: ")+QString::number(chargePercentageSlider->value(),10)+"%");
+    chargePercentageLabel = new QLabel(g_change_count_name.c_str()+QString::number(chargePercentageSlider->value(),10)+"%");
     chargePercentageLabel->setFixedSize(150,30);
 }
 
 void ConfigTabTwo::sliderChange(int changeCount)
 {
-    chargePercentageLabel->setText(tr("Wielkość sąsiedztwa: ")+QString::number(changeCount,10)+"%");
+    chargePercentageLabel->setText(g_change_count_name.c_str()+QString::number(changeCount,10)+"%");
 }
 
 void ConfigTabTwo::cancelChanges(void)

@@ -230,7 +230,7 @@ void TaskMainWindow::save_Action(void)
         Taskparent->file = new QFile(fileName);
         Taskparent->file->open(QIODevice::WriteOnly| QIODevice::Text);
 
-        save_data();
+        //save_data();
 
         Taskparent->file->close();
 
@@ -248,7 +248,7 @@ void TaskMainWindow::load_Action(void)
         Taskparent->file = new QFile(fileName);
         Taskparent->file->open(QIODevice::ReadOnly| QIODevice::Text);
 
-        read_data();
+        //read_data();
 
         Taskparent->file->close();
     }
@@ -432,7 +432,7 @@ void TaskMainWindow::exit_Action(void)
         }
     }
 }
-
+/*
 void TaskMainWindow::save_data(void)
 {
     QTextStream stream(Taskparent->file);
@@ -523,7 +523,7 @@ void TaskMainWindow::save_data(void)
         }
 
         stream<<endl<<endl;
-    }
+    }*/
 /*
     if(!TSB.isEmpty())
     {
@@ -554,7 +554,7 @@ void TaskMainWindow::save_data(void)
             stream<<TSB[i].size()<<endl;
         }
     }
-    */
+    *//*
 }
 
 void TaskMainWindow::read_data(void)
@@ -660,7 +660,7 @@ void TaskMainWindow::read_data(void)
          lcd4->display(waste(temptsf.result));
      }
 }
-
+*/
 void TaskMainWindow::delete_task(void)
 {
     SharedMemory::Instance()->deleteInstance(Taskparent);
@@ -674,7 +674,7 @@ void TaskMainWindow::thread_finished(void)
     {
         case 1:
             tsf = Taskparent->taskthread->tsf;
-            lcd1->display(tsf.result.size());
+            lcd1->display((int)tsf.result.size());
             lcd2->display(waste(tsf.result));
 
             saveAction->setEnabled(true);
@@ -697,7 +697,7 @@ void TaskMainWindow::thread_finished(void)
             result = Taskparent->taskthread->result;
             temptsf.result = result;
             Taskparent->board2->paintBoard(temptsf);
-            lcd3->display(temptsf.result.size());
+            lcd3->display((int)temptsf.result.size());
             lcd4->display(waste(temptsf.result));
 
             saveAction->setEnabled(true);
@@ -713,7 +713,7 @@ void TaskMainWindow::thread_finished(void)
 
             Taskparent->file = new QFile("temp.tbf");
             Taskparent->file->open(QIODevice::WriteOnly| QIODevice::Text);
-            save_data();
+            //save_data();
             Taskparent->file->close();
 
         break;
@@ -738,40 +738,15 @@ void TaskMainWindow::update_progress(int value,int all,int time)
     ETL->setText("ETL: "+QString::number(etl_min,10)+" m "+QString::number(etl_sec,10)+" s");
 }
 
-int TaskMainWindow::waste(QVector<Figure> v)
+int TaskMainWindow::waste(std::vector<std::shared_ptr<Shape>> v)
 {
     //cout<<"v: "<<v.size()<<endl;
    int all = tsf.data.height * tsf.data.width;
 
-   int p_kolo = 3.14*(tsf.data.size/2)*(tsf.data.size/2);
-   int p_kwadrat = tsf.data.size*tsf.data.size;
-   int p_prostokat = tsf.data.size*tsf.data.size*0.66;
-   int p_trojkat = 0.5*tsf.data.size*tsf.data.size;
-
    int sum = 0;
 
-   for( int i = 0; i < v.size(); i++)
-   {
-       FigureName temp = v[i].figureName;
-       switch(temp)
-       {
-            case kwadrat:
-                sum+=p_kwadrat;
-            break;
-
-            case kolo:
-                sum+=p_kolo;
-            break;
-
-            case trojkat:
-                sum+=p_trojkat;
-            break;
-
-            case prostokat:
-                sum+=p_prostokat;
-            break;
-       }
-   }
+   for(auto & iter : v)
+       sum += iter->get_area(tsf.data.size);
 
    float p = (float)(all-sum)/all;
 

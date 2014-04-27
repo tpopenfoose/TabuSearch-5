@@ -2,6 +2,7 @@
 #include "inserter.h"
 #include <math.h>
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -84,21 +85,24 @@ TSF Inserter::insert(TSF tsf)
 
         if(!counter_back)
         {
-            input[counter].x = pozycja_x;
-            input[counter].y = pozycja_y;
+            input[counter]->set_x(pozycja_x);
+            input[counter]->set_y(pozycja_y);
 
-            fill_grid(input[counter]);
+            input[counter]->fill_grid(grid,tsf.data.size);
 
             output.push_back(input[counter]);
         }
         counter_back = false;
     }
 
-    insert_end();
+    //insert_end();
 
     tsf.result = output;
-
-    tsf.rest = tsf.all.mid(tsf.result.size());
+    auto first = tsf.all.begin() + tsf.result.size();
+    auto last = tsf.all.end();
+    std::vector<std::shared_ptr<Shape>> test(first, last);
+    tsf.rest = test;
+    //tsf.rest = auto(first, last);
 
     for( int i = 0; i < data.width; i++ )
         delete [] grid[i];
@@ -113,49 +117,27 @@ TSF Inserter::insert(TSF tsf)
     return tsf;
 }
 
-void Inserter::calculate_new_f_grid(Figure f)
+void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s)
 {
     grid_clear(1); //clear f_grid
 
-    f.x = pozycja_x;
-    f.y = pozycja_y;
+    s->set_x(pozycja_x);
+    s->set_y(pozycja_y);
 
-    fill_f_grid(f);
+    s->fill_grid(f_grid, data.size);
 }
 
-void Inserter::fill_f_grid(Figure f)
-{
-    switch(f.figureName)
-    {
-        case kwadrat:
-            fill_square(f,1);
-        break;
-
-        case kolo:
-            fill_elipse(f,1);
-        break;
-
-        case trojkat:
-            fill_triangle(f,1);
-        break;
-
-        case prostokat:
-            fill_rectangle(f,1);
-        break;
-    }
-}
-
-void Inserter::calculate_position(Figure f)
+void Inserter::calculate_position(std::shared_ptr<Shape> s)
 {
     grid_clear(1);
 
     pozycja_x = current_column*data.size;
     pozycja_y = current_line*data.size;
 
-    f.x = pozycja_x;
-    f.y = pozycja_y;
+    s->set_x(pozycja_x);
+    s->set_y(pozycja_y);
 
-    fill_f_grid(f);
+    s->fill_grid(f_grid, data.size);
 
     if( compare_grids() )
     {
@@ -165,7 +147,7 @@ void Inserter::calculate_position(Figure f)
                 {
                     pozycja_x-=1;
                     pozycja_y-=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -174,7 +156,7 @@ void Inserter::calculate_position(Figure f)
                     {
                         pozycja_x+=1;
                         pozycja_y+=1;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
 
@@ -188,7 +170,7 @@ void Inserter::calculate_position(Figure f)
                 if( compare_grids() && (pozycja_y > 0) )
                 {
                     pozycja_y-=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -196,7 +178,7 @@ void Inserter::calculate_position(Figure f)
                     if( !compare_grids() )
                     {
                         pozycja_y+=1;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
 
@@ -210,7 +192,7 @@ void Inserter::calculate_position(Figure f)
                 if( compare_grids() && (pozycja_x > 0) )
                 {
                     pozycja_x-=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -218,7 +200,7 @@ void Inserter::calculate_position(Figure f)
                     if( !compare_grids() )
                     {
                         pozycja_x+=1;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
 
@@ -239,7 +221,7 @@ void Inserter::calculate_position(Figure f)
                 {
                     pozycja_x+=1;
                     pozycja_y+=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -250,7 +232,7 @@ void Inserter::calculate_position(Figure f)
                     {
                         pozycja_x = pozycja_x_mem;
                         pozycja_y = pozycja_y_mem;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
                 }
@@ -261,7 +243,7 @@ void Inserter::calculate_position(Figure f)
                 if( !compare_grids() && (pozycja_y < (data.height-data.size)) )
                 {
                     pozycja_y+=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -271,7 +253,7 @@ void Inserter::calculate_position(Figure f)
                     else
                     {
                         pozycja_y = pozycja_y_mem;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
                 }
@@ -282,7 +264,7 @@ void Inserter::calculate_position(Figure f)
                 if( !compare_grids() && (pozycja_x < (data.width-data.size)) )
                 {
                     pozycja_x+=1;
-                    calculate_new_f_grid(f);
+                    calculate_new_f_grid(s);
                 }
 
                 else
@@ -292,7 +274,7 @@ void Inserter::calculate_position(Figure f)
                     else
                     {
                         pozycja_x = pozycja_x_mem;
-                        calculate_new_f_grid(f);
+                        calculate_new_f_grid(s);
                         break;
                     }
                 }
@@ -359,28 +341,6 @@ void Inserter::grid_clear(bool gn)
     }
 }
 
-void Inserter::fill_grid(Figure f)
-{
-    switch(f.figureName)
-    {
-        case kolo:
-            fill_elipse(f,0);
-        break;
-
-        case kwadrat:
-            fill_square(f,0);
-        break;
-
-        case prostokat:
-            fill_rectangle(f,0);
-        break;
-
-        case trojkat:
-            fill_triangle(f,0);
-        break;
-    }
-}
-
 bool Inserter::compare_grids(void)
 {
     for( int i = 0; i < data.width; i++)
@@ -395,285 +355,7 @@ bool Inserter::compare_grids(void)
     return true;
 }
 
-void Inserter::fill_square(Figure f, bool gn)
-{
-    for (int i = f.x;i<f.x+data.size;i++)
-    {
-        for(int j = f.y;j<f.y+data.size;j++)
-        {
-            if(gn)
-                f_grid[i][j] = 1;
-            else
-                grid[i][j] = 1;
-        }
-    }
-}
-
-void Inserter::fill_elipse(Figure f, bool gn)
-{
-    for (int i = f.x;i<f.x+data.size;i++)
-    {
-        for(int j = f.y;j<f.y+data.size;j++)
-        {
-            int od = sqrt( pow(j-(f.y+(data.size/2)),2) + pow(i-(f.x+(data.size/2)),2) );
-
-            if( od <= (data.size/2) )
-            {
-                if(gn)
-                    f_grid[i][j] = 1;
-                else
-                    grid[i][j] = 1;
-            }
-        }
-    }
-}
-
-void Inserter::fill_rectangle(Figure f, bool gn)
-{
-    if(f.pozycja%2 == 0 )
-    {
-        for (int i = f.x;i<f.x+data.size;i++)
-        {
-            for(int j = f.y;j<f.y+(data.size-10);j++)
-            {
-                if(gn)
-                    f_grid[i][j] = 1;
-                else
-                    grid[i][j] = 1;
-            }
-        }
-    }
-
-    else
-    {
-        for (int i = f.x;i<f.x+(data.size-10);i++)
-        {
-            for(int j = f.y;j<f.y+data.size;j++)
-            {
-                if(gn)
-                    f_grid[i][j] = 1;
-                else
-                    grid[i][j] = 1;
-            }
-        }
-    }
-}
-
-void Inserter::fill_triangle(Figure f,bool gn)
-{
-    if(f.pozycja == 0 )
-    {
-        for ( int i = f.x; i < f.x+(data.size)/2; i++)
-        {
-            for( int j = f.y; j < f.y+data.size; j++)
-            {
-                if( prosta1(f,i) <= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-
-        for ( int i = f.x+(data.size/2); i < f.x+data.size; i++ )
-        {
-            for( int j = f.y; j < f.y+data.size; j++ )
-            {
-                if( prosta2(f,i) <= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-    }
-
-    if(f.pozycja == 1 )
-    {
-        for ( int i = f.x; i < f.x+data.size; i++)
-        {
-            for( int j = f.y; j < f.y+(data.size/2); j++)
-            {
-                if( prosta1(f,i) <= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-
-        for ( int i = f.x; i < f.x+data.size; i++ )
-        {
-            for( int j = f.y+(data.size/2); j < f.y+data.size; j++ )
-            {
-                if( prosta2(f,i) >= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-    }
-
-    if(f.pozycja == 2 )
-    {
-        for ( int i = f.x; i < f.x+(data.size)/2; i++)
-        {
-            for( int j = f.y; j < f.y+data.size; j++)
-            {
-                if( prosta1(f,i) >= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-
-        for ( int i = f.x+(data.size/2); i < f.x+data.size; i++ )
-        {
-            for( int j = f.y; j < f.y+data.size; j++ )
-            {
-                if( prosta2(f,i) >= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-    }
-
-    if(f.pozycja == 3 )
-    {
-        for ( int i = f.x; i < f.x+data.size; i++)
-        {
-            for( int j = f.y; j < f.y+(data.size/2); j++)
-            {
-                if( prosta1(f,i) <= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-
-        for ( int i = f.x; i < f.x+data.size; i++ )
-        {
-            for( int j = f.y+(data.size/2); j < f.y+data.size; j++ )
-            {
-                if( prosta2(f,i) >= j )
-                {
-                    if(gn)
-                        f_grid[i][j] = 1;
-                    else
-                        grid[i][j] = 1;
-                }
-            }
-        }
-    }
-}
-
-double Inserter::prosta1(Figure f,int x)
-{
-    double y=0,y1=0,y2=0,x1=0,x2=0;
-
-    switch(f.pozycja)
-    {
-        case 0:
-            x1 = f.x;
-            y1 = f.y + data.size;
-
-            x2 = f.x + (data.size/2);
-            y2 = f.y;
-        break;
-
-        case 1:
-            x1 = f.x;
-            y1 = f.y;
-
-            x2 = f.x + data.size;
-            y2 = f.y + (data.size/2);
-        break;
-
-        case 2:
-            x1 = f.x;
-            y1 = f.y;
-
-            x2 = f.x + (data.size/2);
-            y2 = f.y + data.size;
-        break;
-
-        case 3:
-            x1 = f.x + data.size;
-            y1 = f.y;
-
-            x2 = f.x;
-            y2 = f.y + (data.size/2);
-        break;
-    }
-
-    y = (((y2-y1)*(x-x1))/(x2-x1))+y1;
-
-    return y;
-}
-
-double Inserter::prosta2(Figure f,int x)
-{
-    double y=0,y1=0,y2=0,x1=0,x2=0;
-
-    switch(f.pozycja)
-    {
-        case 0:
-            x1 = f.x + (data.size/2);
-            y1 = f.y;
-
-            x2 = f.x + data.size;
-            y2 = f.y + data.size;
-        break;
-
-        case 1:
-            x1 = f.x + data.size;
-            y1 = f.y + (data.size/2);
-
-            x2 = f.x;
-            y2 = f.y + data.size;
-        break;
-
-        case 2:
-            x1 = f.x + (data.size/2);
-            y1 = f.y + data.size;
-
-            x2 = f.x + data.size;
-            y2 = f.y;
-        break;
-
-        case 3:
-            x1 = f.x;
-            y1 = f.y + (data.size/2);
-
-            x2 = f.x + data.size;
-            y2 = f.y + data.size;
-        break;
-    }
-
-    y = (((y2-y1)*(x-x1))/(x2-x1))+y1;
-
-    return y;
-}
-
+/*
 void Inserter::insert_end(void)
 {
     bool inserted = false;
@@ -808,3 +490,4 @@ void Inserter::insert_end(void)
             break;
     }
 }
+*/

@@ -1,11 +1,12 @@
 #include "configtabone.h"
+#include "defaultconfig.h"
 
 ConfigTabOne::ConfigTabOne(QWidget *parent) :
     ConfigTab(parent)
 {
-    width = 100;
-    height = 200;
-    size = 20;
+    width = g_width;
+    height = g_height;
+    size = g_size;
 
     createLayout();
 }
@@ -30,9 +31,9 @@ void ConfigTabOne::createLayout(void)
 
 void ConfigTabOne::createUI(void)
 {
-    widthLabel = new QLabel(tr("Szerokość"));
-    heightLabel = new QLabel(tr("Wysokość"));
-    sizeLabel = new QLabel(tr("Rozmiar figury"));
+    widthLabel = new QLabel(g_width_name.c_str());
+    heightLabel = new QLabel(g_height_name.c_str());
+    sizeLabel = new QLabel(g_size_name.c_str());
 
     widthLineEdit = new QLineEdit(QString::number(width,10));
     widthLineEdit->setFixedSize(60,25);

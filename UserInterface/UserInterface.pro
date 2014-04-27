@@ -1,14 +1,16 @@
 TEMPLATE = lib
 CONFIG += staticlib
 INCLUDEPATH += \
-    ../Sources
+    ../Sources \
+    ../Shapes
 QT += widgets
 HEADERS += \
     configwindow.h \
     configtabtwo.h \
     configtabthree.h \
     configtabone.h \
-    configtab.h
+    configtab.h \
+    defaultconfig.h
 
 SOURCES += \
     configwindow.cpp \
@@ -16,3 +18,5 @@ SOURCES += \
     configtabthree.cpp \
     configtabone.cpp \
     configtab.cpp
+
+CONFIG += c++11

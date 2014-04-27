@@ -29,7 +29,7 @@ private:
     TSF tsf;
     Task *Taskparent;
     TabuSearch *engine;
-    QVector<Figure> result;
+    std::vector<std::shared_ptr<Shape>> result;
 
 friend class TabuSearch;
 friend class TaskMainWindow;

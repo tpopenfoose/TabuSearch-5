@@ -1,11 +1,11 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
-#include "rotatableshape.h"
+#include "shape.h"
 
-class Rectangle : public RotatableShape
+class Rectangle : public Shape
 {
 public:
-    Rectangle(int p_angle);
+    Rectangle();
     virtual void draw(QPainter &, int, int);
     virtual double get_area(int);
     virtual void fill_grid(bool**, int);

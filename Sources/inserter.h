@@ -4,6 +4,7 @@
 #include <QVector>
 #include "globalne.h"
 #include <QObject>
+#include <memory>
 
 class Inserter : public QObject
 {
@@ -15,9 +16,8 @@ public:
     TSF insert(TSF);
 private:
     ConfigData data;
-
-    QVector<Figure> input;
-    QVector<Figure> output;
+    std::vector<std::shared_ptr<Shape>> input;
+    std::vector<std::shared_ptr<Shape>> output;
 
     bool** grid;
     bool** f_grid;
@@ -35,22 +35,12 @@ private:
     int line_count;
 
     void init_grid(void);
-    void fill_grid(Figure);
     void grid_clear(bool);
-    void fill_f_grid(Figure);
-
-    void fill_square(Figure,bool);
-    void fill_elipse(Figure,bool);
-    void fill_rectangle(Figure,bool);
-    void fill_triangle(Figure,bool);
-
-    double prosta1(Figure,int);
-    double prosta2(Figure,int);
 
     bool compare_grids(void);
 
-    void calculate_position(Figure);
-    void calculate_new_f_grid(Figure);
+    void calculate_position(std::shared_ptr<Shape> s);
+    void calculate_new_f_grid(std::shared_ptr<Shape> s);
 
     void init_insert(void);
     void insert_end(void);

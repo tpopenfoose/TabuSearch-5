@@ -1,19 +1,21 @@
 TEMPLATE = lib
 CONFIG += staticlib
+INCLUDEPATH += \
+    ../Sources
 HEADERS += \
     shape.h \
-    rotatableshape.h \
-    notrotatableshape.h \
     circle.h \
     rectangle.h \
     square.h \
-    triangle.h
+    triangle.h \
+    generator.h
 
 SOURCES += \
     shape.cpp \
-    rotatableshape.cpp \
-    notrotatableshape.cpp \
     circle.cpp \
     rectangle.cpp \
     square.cpp \
-    triangle.cpp
+    triangle.cpp \
+    generator.cpp
+
+CONFIG += c++11

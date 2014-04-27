@@ -4,12 +4,6 @@
 #include <QtGui>
 #include <QMainWindow>
 
-//class TaskButton;
-//class TaskButtonGroup;
-//class Task;
-//class MainScreen;
-
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

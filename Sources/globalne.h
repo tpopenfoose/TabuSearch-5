@@ -3,6 +3,8 @@
 
 #include <QVector>
 #include <QString>
+#include "shape.h"
+#include <memory>
 
 class Point
 {
@@ -26,26 +28,13 @@ struct ConfigData
     int tabutime;
 };
 
-enum FigureName
-{
-   kolo, kwadrat, trojkat, prostokat
-};
-
-struct Figure
-{
-    int x;
-    int y;
-    FigureName figureName;
-    int pozycja;
-};
-
 struct TSF
 {
     ConfigData data;
-    QVector<Figure> all;
+    std::vector<std::shared_ptr<Shape>> all;
 
-    QVector <Figure> result;
-    QVector <Figure> rest;
+    std::vector<std::shared_ptr<Shape>> result;
+    std::vector<std::shared_ptr<Shape>> rest;
 };
 
 #endif // GLOBALNE_H

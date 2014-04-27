@@ -1,11 +1,11 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
-#include "rotatableshape.h"
+#include "shape.h"
 
-class Triangle : public RotatableShape
+class Triangle : public Shape
 {
 public:
-    Triangle(int p_angle);
+    Triangle();
     virtual void draw(QPainter &, int, int);
     virtual double get_area(int);
     virtual void fill_grid(bool**, int);

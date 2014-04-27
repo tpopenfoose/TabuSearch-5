@@ -1,13 +1,11 @@
 #include "configtabthree.h"
-#include <iostream>
-
-using namespace std;
+#include "defaultconfig.h"
 
 ConfigTabThree::ConfigTabThree(QWidget *parent) :
     ConfigTab(parent)
 {
-    tabuListSize = 20;
-    tabuListTime = 10;
+    tabuListSize = g_tabu_list_size;
+    tabuListTime = g_tabu_list_time;
 
     createLayout();
 }
@@ -28,8 +26,8 @@ void ConfigTabThree::createLayout(void)
 
 void ConfigTabThree::createUI(void)
 {
-    tabuListSizeLabel = new QLabel(tr("Długość listy Tabu"));
-    tabuListTimeLabel = new QLabel(tr("Czas pobytu na Liście Tabu"));
+    tabuListSizeLabel = new QLabel(g_tabu_list_size_name.c_str());
+    tabuListTimeLabel = new QLabel(g_tabu_list_time_name.c_str());
 
     tabuListSizeLineEdit = new QLineEdit(QString::number(tabuListSize,10));
     tabuListSizeLineEdit->setFixedSize(60,25);
@@ -60,9 +58,6 @@ ConfigData ConfigTabThree::getConfigData(ConfigData data)
 
 void ConfigTabThree::loadConfigData(ConfigData data)
 {
-    //cout<<data.tabusize<<endl;
-    //cout<<data.tabutime<<endl;
-
     this->tabuListSize = data.tabusize;
     this->tabuListTime = data.tabutime;
 

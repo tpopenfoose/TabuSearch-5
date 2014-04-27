@@ -2,9 +2,7 @@
 #include "configtabone.h"
 #include "configtabtwo.h"
 #include "configtabthree.h"
-#include <iostream>
-
-using namespace std;
+#include "defaultconfig.h"
 
 ConfigWindow::ConfigWindow(QWidget *parent) :
     QFrame(parent)
@@ -41,14 +39,14 @@ void ConfigWindow::createMainLayout(void)
 void ConfigWindow::createMainUI(void)
 {
     tabBar = new QTabBar;
-    tabBar->addTab("Dane");
-    tabBar->addTab("Algorytm");
-    tabBar->addTab("Lista Tabu");
+    tabBar->addTab(g_tab1.c_str());
+    tabBar->addTab(g_tab2.c_str());
+    tabBar->addTab(g_tab3.c_str());
     tabBar->setFixedSize(250,25);
 
-    cancelButton = new QPushButton(tr("Cancel"));
+    cancelButton = new QPushButton(g_button1.c_str());
     cancelButton->setFixedSize(60,30);
-    okButton = new QPushButton(tr("OK"));
+    okButton = new QPushButton(g_button2.c_str());
     okButton->setFixedSize(60,30);
 }
 

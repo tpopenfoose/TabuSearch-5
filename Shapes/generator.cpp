@@ -4,60 +4,41 @@
 #include "rectangle.h"
 #include "circle.h"
 #include <QTime>
+#include <memory>
 
 Generator::Generator()
 {
 }
 
-std::vector<Shape> Generator::generate(const ConfigData& p_data)
+std::vector<std::shared_ptr<Shape>> Generator::generate(const ConfigData& p_data)
 {
     qsrand((uint)QTime::currentTime().msec());
 
     calculate_amount(p_data);
-    std::vector<Shape> vector;
+    std::vector<std::shared_ptr<Shape>> vector;
 
     for(int i = 0; i < m_figures_count; i++) {
-        switch(qrand() % 2)
+        switch(qrand() % 4)
         {
             case 0: {
-                vector.push_back(draw_rotatable_shape());
+                vector.push_back(std::shared_ptr<Shape>(new Triangle()));
             } break;
 
             case 1: {
-                vector.push_back(draw_not_rotatable_shape());
+                vector.push_back(std::shared_ptr<Shape>(new Rectangle()));
+            } break;
+
+            case 2: {
+                vector.push_back(std::shared_ptr<Shape>(new Circle()));
+            } break;
+
+            case 3: {
+                vector.push_back(std::shared_ptr<Shape>(new Square()));
             } break;
         }
     }
 
     return vector;
-}
-
-RotatableShape Generator::draw_rotatable_shape()
-{
-    switch(qrand() % 2)
-    {
-        case 0: {
-            return Triangle(0);
-        } break;
-
-        case 1: {
-            return Rectangle(0);
-        } break;
-    }
-}
-
-NotRotatableShape Generator::draw_not_rotatable_shape()
-{
-    switch(qrand() % 2)
-    {
-        case 0: {
-            return Circle();
-        } break;
-
-        case 1: {
-            return Square();
-        } break;
-    }
 }
 
 void Generator::calculate_amount(const ConfigData& p_data)
@@ -71,5 +52,3 @@ void Generator::calculate_amount(const ConfigData& p_data)
     float mnoznik = (float)p_data.procent/100;
     m_permutation_count = mnoznik*m_figures_count;
 }
-
-

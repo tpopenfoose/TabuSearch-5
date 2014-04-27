@@ -4,14 +4,13 @@
 #include <QtGui>
 
 #include "globalne.h"
+#include <memory>
 
 class TaskThread;
 class Inserter;
 
 struct TabuListElement
 {
-    bool kind;
-
     int pos1;
 
     int pos2;
@@ -45,16 +44,16 @@ private:
 
     Inserter *inserter;
 
-    QVector<Figure> input;
-    QVector<Figure> result;
+    std::vector<std::shared_ptr<Shape>> input;
+    std::vector<std::shared_ptr<Shape>> result;
 
     QVector<TabuListElement> TabuList;
     QVector<TabuListElement> PreTabuList;
 
-    QVector< QVector<Figure> > Baza_output;
-    QVector< QVector<Figure> > Baza_input;
-    QVector< QVector<Figure> > BazaTabu_input;
-    QVector< QVector<Figure> > BazaTabu_output;
+    QVector< std::vector<std::shared_ptr<Shape>> > Baza_output;
+    QVector< std::vector<std::shared_ptr<Shape>> > Baza_input;
+    QVector< std::vector<std::shared_ptr<Shape>> > BazaTabu_input;
+    QVector< std::vector<std::shared_ptr<Shape>> > BazaTabu_output;
 
     void calculateFigures();
 
@@ -64,7 +63,7 @@ private:
 
     void aspiration(void);
 
-    int wasteSum(QVector<Figure>);
+    int wasteSum(std::vector<std::shared_ptr<Shape>>);
 
     bool tabu(TabuListElement);
     void tabulist_calculate(void);

@@ -10,3 +10,4 @@ SUBDIRS = \
 CONFIG += ordered
 CONFIG += debug
 CONFIG += qt
+CONFIG += c++11

@@ -10,7 +10,6 @@ HEADERS  += \
     tabusearch.h \
     inserter.h \
     globalne.h \
-    generator.h \
     mainwindow.h \
     mainscreen.h \
     taskthread.h \
@@ -25,7 +24,6 @@ HEADERS  += \
 SOURCES += \
     tabusearch.cpp \
     inserter.cpp \
-    generator.cpp \
     mainwindow.cpp \
     mainscreen.cpp \
     taskthread.cpp \
@@ -38,3 +36,4 @@ SOURCES += \
     board.cpp
 
 QT += widgets
+CONFIG += c++11

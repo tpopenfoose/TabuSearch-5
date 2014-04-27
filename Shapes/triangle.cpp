@@ -1,6 +1,6 @@
 #include "triangle.h"
 
-Triangle::Triangle(int p_angle) : RotatableShape(Qt::blue, p_angle)
+Triangle::Triangle() : Shape(Qt::blue)
 {
 }
 
@@ -11,53 +11,14 @@ void Triangle::draw(QPainter & p_painter, int p_size, int p_pen_width)
 
     int x1=0,x2=0,x3=0,y1=0,y2=0,y3=0;
 
-    if( m_angle == 0)
-    {
-        x1 = m_x + l_half_pen;
-        y1 = m_y + p_size - l_half_pen;
+    x1 = m_x + l_half_pen;
+    y1 = m_y + p_size - l_half_pen;
 
-        x2 = m_x + (p_size/2);
-        y2 = m_y + l_half_pen;
+    x2 = m_x + (p_size/2);
+    y2 = m_y + l_half_pen;
 
-        x3 = m_x + p_size - l_half_pen;
-        y3 = m_y + p_size - l_half_pen;
-    }
-
-    if( m_angle == 1)
-    {
-        x1 = m_x + l_half_pen;
-        y1 = m_y + l_half_pen;
-
-        x2 = m_x + p_size - l_half_pen;
-        y2 = m_y + (p_size/2);
-
-        x3 = m_x + l_half_pen;
-        y3 = m_y + p_size - l_half_pen;
-
-    }
-    if( m_angle == 2)
-    {
-        x1 = m_x + l_half_pen;
-        y1 = m_y + l_half_pen;
-
-        x2 = m_x + (p_size/2);
-        y2 = m_y + p_size - l_half_pen;
-
-        x3 = m_x + p_size - l_half_pen;
-        y3 = m_y + l_half_pen;
-
-    }
-    if( m_angle == 3)
-    {
-        x1 = m_x + p_size - l_half_pen;
-        y1 = m_y + l_half_pen;
-
-        x2 = m_x + l_half_pen;
-        y2 = m_y + (p_size/2);
-
-        x3 = m_x + p_size - l_half_pen;
-        y3 = m_y + p_size - l_half_pen;
-    }
+    x3 = m_x + p_size - l_half_pen;
+    y3 = m_y + p_size - l_half_pen;
 
     p_painter.drawLine(x1+2,y1+2,x2+2,y2+2);
     p_painter.drawLine(x2+2,y2+2,x3+2,y3+2);
@@ -71,67 +32,17 @@ double Triangle::get_area(int p_size)
 
 void Triangle::fill_grid(bool** p_grid, int p_size)
 {
-    if(m_angle == 0 ) {
-        for ( int i = m_x; i < m_x+(p_size)/2; i++) {
-            for( int j = m_y; j < m_y+p_size; j++) {
-                if( prosta1(i, p_size) <= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-
-        for ( int i = m_x+(p_size/2); i < m_x+p_size; i++ ) {
-            for( int j = m_y; j < m_y+p_size; j++ ) {
-                if( prosta2(i, p_size) <= j )
-                    p_grid[i][j] = 1;
-            }
+    for ( int i = m_x; i < m_x+(p_size)/2; i++) {
+        for( int j = m_y; j < m_y+p_size; j++) {
+            if( prosta1(i, p_size) <= j )
+                p_grid[i][j] = 1;
         }
     }
 
-    if(m_angle == 1 ) {
-        for ( int i = m_x; i < m_x+m_angle; i++) {
-            for( int j = m_y; j < m_y+(p_size/2); j++) {
-                if( prosta1(i, p_size) <= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-
-        for ( int i = m_x; i < m_x+p_size; i++ ) {
-            for( int j = m_y+(p_size/2); j < m_y+p_size; j++ ) {
-                if( prosta2(i, p_size) >= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-    }
-
-    if(m_angle == 2 ) {
-        for ( int i = m_x; i < m_x+(p_size)/2; i++) {
-            for( int j = m_y; j < m_y+p_size; j++) {
-                if( prosta1(i, p_size) >= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-
-        for ( int i = m_x+(p_size/2); i < m_x+p_size; i++ ) {
-            for( int j = m_y; j < m_y+p_size; j++ ) {
-                if( prosta2(i, p_size) >= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-    }
-
-    if(m_angle == 3 ) {
-        for ( int i = m_x; i < m_x+p_size; i++) {
-            for( int j = m_y; j < m_y+(p_size/2); j++) {
-                if( prosta1(i, p_size) <= j )
-                    p_grid[i][j] = 1;
-            }
-        }
-
-        for ( int i = m_x; i < m_x+p_size; i++ ) {
-            for( int j = m_y+(p_size/2); j < m_y+p_size; j++ ) {
-                if( prosta2(i, p_size) >= j )
-                    p_grid[i][j] = 1;
-            }
+    for ( int i = m_x+(p_size/2); i < m_x+p_size; i++ ) {
+        for( int j = m_y; j < m_y+p_size; j++ ) {
+            if( prosta2(i, p_size) <= j )
+                p_grid[i][j] = 1;
         }
     }
 }
@@ -140,40 +51,11 @@ double Triangle::prosta1(int p_x, int p_size)
 {
     double y=0,y1=0,y2=0,x1=0,x2=0;
 
-    switch(m_angle)
-    {
-        case 0:
-            x1 = m_x;
-            y1 = m_y + p_size;
+    x1 = m_x;
+    y1 = m_y + p_size;
 
-            x2 = m_x + (p_size/2);
-            y2 = m_y;
-        break;
-
-        case 1:
-            x1 = m_x;
-            y1 = m_y;
-
-            x2 = m_x + p_size;
-            y2 = m_y + (p_size/2);
-        break;
-
-        case 2:
-            x1 = m_x;
-            y1 = m_y;
-
-            x2 = m_x + (p_size/2);
-            y2 = m_y + p_size;
-        break;
-
-        case 3:
-            x1 = m_x + p_size;
-            y1 = m_y;
-
-            x2 = m_x;
-            y2 = m_y + (p_size/2);
-        break;
-    }
+    x2 = m_x + (p_size/2);
+    y2 = m_y;
 
     y = (((y2-y1)*(p_x-x1))/(x2-x1))+y1;
 
@@ -184,40 +66,11 @@ double Triangle::prosta2(int p_x, int p_size)
 {
     double y=0,y1=0,y2=0,x1=0,x2=0;
 
-    switch(m_angle)
-    {
-        case 0:
-            x1 = m_x + (p_size/2);
-            y1 = m_y;
+    x1 = m_x + (p_size/2);
+    y1 = m_y;
 
-            x2 = m_x + p_size;
-            y2 = m_y + p_size;
-        break;
-
-        case 1:
-            x1 = m_x + p_size;
-            y1 = m_y + (p_size/2);
-
-            x2 = m_x;
-            y2 = m_y + p_size;
-        break;
-
-        case 2:
-            x1 = m_x + (p_size/2);
-            y1 = m_y + p_size;
-
-            x2 = m_x + p_size;
-            y2 = m_y;
-        break;
-
-        case 3:
-            x1 = m_x;
-            y1 = m_y + (p_size/2);
-
-            x2 = m_x + p_size;
-            y2 = m_y + p_size;
-        break;
-    }
+    x2 = m_x + p_size;
+    y2 = m_y + p_size;
 
     y = (((y2-y1)*(p_x-x1))/(x2-x1))+y1;
 

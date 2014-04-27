@@ -81,7 +81,7 @@ private:
 
     Task* Taskparent;
     TSF tsf;
-    QVector<Figure> result;
+    std::vector<std::shared_ptr<Shape>> result;
 
 
     void delete_task(void);
@@ -97,7 +97,7 @@ private:
     void save_data(void);
     void read_data(void );
 
-    int waste(QVector<Figure> v);
+    int waste(std::vector<std::shared_ptr<Shape>> v);
 
 friend class Task;
 
