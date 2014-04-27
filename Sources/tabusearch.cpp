@@ -24,20 +24,18 @@ void TabuSearch::clear(void)
 
 }
 
-void TabuSearch::generateFirstResult(ConfigData data)
+std::unique_ptr<Result> TabuSearch::generateFirstResult(std::unique_ptr<Result> p_result)
 {
     Generator gen;
-    tsf.data = data;
-    tsf.all = gen.generate(data);
+    p_result = std::move(gen.generate(std::move(p_result)));
 
-    tsf = inserter->insert(tsf);
+    p_result = std::move(inserter->insert(std::move(p_result)));
 
-    TaskThreadParent->tsf = tsf;
+    return p_result;
 }
 
 void TabuSearch::aspiration(void)
 {
-    //int max = result.size();
     int min = wasteSum(result);
     int waste;
     int pos = -1;
@@ -63,56 +61,32 @@ void TabuSearch::aspiration(void)
 
 int TabuSearch::wasteSum(std::vector<std::shared_ptr<Shape>> v)
 {
-   int all = tsf.data.height * tsf.data.width;
+   int all = m_result->get_height() * m_result->get_width();
 
    int sum = 0;
 
    for(auto & iter : v)
-       sum += iter->get_area(tsf.data.size);
+       sum += iter->get_area(m_result->get_size());
 
    float p = (float)(all-sum)/all;
 
    return 100*p;
 }
 
-void TabuSearch::begin(TSF tsf)
+std::unique_ptr<Result> TabuSearch::optimized(std::unique_ptr<Result> p_result)
 {
-    //-------------------------------------
-    qsrand((uint)QTime::currentTime().msec());
-    QDate date = QDate::currentDate();
-    QString dateString = date.toString(Qt::ISODate);
-    QTime time = QTime::currentTime();
-    QString timeString = time.toString();
-    timeString.remove(QRegExp(":"));
-    QString filename = dateString+"_"+timeString+".txt";
-    QFile *file = new QFile(filename);
-    file->open(QIODevice::WriteOnly| QIODevice::Text);
-    QTextStream stream(file);
-    //-------------------------------------
-
-    this->tsf = tsf;
+    m_result = std::move(p_result);
     calculateFigures();
-    TabuList.reserve(tsf.data.tabusize);
+    TabuList.reserve(m_result->get_tabusize());
 
-    //int max,pos;
     int min,pos,waste;
-    input = tsf.all;
-
-    //Base_all.push_back(this->tsf.result);
-    //-------------------------------------
-    stream<<this->tsf.result.size()<<";"<<wasteSum(this->tsf.result)<<endl;
-    //-------------------------------------
+    input = m_result->getAll();
 
     QTime timer;
     timer.start();
-
-    //-------------------------------------
-    QTime timer2;
-    timer2.start();
-    //-------------------------------------
     QMutex	waitMutex;
 
-    for(int i = 0; i < tsf.data.iteration; i++)
+    for(int i = 0; i < m_result->get_iteration(); i++)
     {
         if (TaskThreadParent->m_bToSuspend)
         {
@@ -121,20 +95,18 @@ void TabuSearch::begin(TSF tsf)
             waitMutex.unlock();
         }
 
-        emit stats(i,tsf.data.iteration,timer.elapsed());
+        emit stats(i,m_result->get_iteration(),timer.elapsed());
 
         permutate();
 
         tabulist_calculate();
 
-       // max = 0;
         min = 100;
         pos = 0;
 
         for(int j = 0; j < Baza_output.size(); j++)
         {
             waste = wasteSum(Baza_output[j]);
-            //if(Baza_output[j].size() > max)
             if( waste < min)
             {
                 min = waste;
@@ -149,10 +121,6 @@ void TabuSearch::begin(TSF tsf)
 
         input = Baza_input[pos];
         result = Baza_output[pos];
-        //Base_all.push_back(result);
-        //-------------------------------------
-        stream<<result.size()<<";"<<wasteSum(result)<<endl;
-        //-------------------------------------
 
         aspiration();
 
@@ -163,20 +131,13 @@ void TabuSearch::begin(TSF tsf)
         PreTabuList.clear();
     }
 
-    //Base_all.push_back(result);
-    //-------------------------------------
-    stream<<result.size()<<";"<<wasteSum(result)<<endl;
-    stream<<timer2.elapsed()/1000<<endl;
-    file->close();
-    //-------------------------------------
-
-    //TaskThreadParent->TSB = Base_all;
-    TaskThreadParent->result = result;
-
+    //TaskThreadParent->result = result;
 
     clear();
     emit stats(1,1,timer.elapsed());
-    delete file;
+
+    p_result = std::move(m_result);
+    return p_result;
 }
 
 void TabuSearch::permutate(void)
@@ -204,7 +165,7 @@ void TabuSearch::permutate(void)
 
             el.pos1 = pos1;
             el.pos2 = pos2;
-            el.timeout = tsf.data.tabutime;
+            el.timeout = m_result->get_tabutime();
             el.k = 0;
 
             if(!tabu(el))
@@ -217,11 +178,11 @@ void TabuSearch::permutate(void)
 
         Baza_input.push_back(input);
 
-        TSF temp_tsf;
-        temp_tsf.all = input;
-        temp_tsf.data = tsf.data;
+        std::unique_ptr<Result> temp_result(new Result(*m_result));
+        temp_result->set_all(input);
+        temp_result = std::move(inserter->insert(std::move(temp_result)));
 
-        Baza_output.push_back(inserter->insert(temp_tsf).result);
+        Baza_output.push_back(temp_result->getResult());
     }
 
     input = temp;
@@ -259,11 +220,11 @@ void TabuSearch::tabulist_calculate(void)
 
             BazaTabu_input.push_back(input);
 
-            TSF temp_tsf;
-            temp_tsf.all = input;
-            temp_tsf.data = tsf.data;
+            std::unique_ptr<Result> temp_result(new Result(*m_result));
+            temp_result->set_all(input);
+            temp_result = std::move(inserter->insert(std::move(temp_result)));
 
-            BazaTabu_output.push_back(inserter->insert(temp_tsf).result);
+            Baza_output.push_back(temp_result->getResult());
 
             TabuList[i].timeout-=1;
             i++;
@@ -279,12 +240,12 @@ void TabuSearch::tabulist_calculate(void)
 
 void TabuSearch::calculateFigures()
 {
-    column_count = tsf.data.width/tsf.data.size;
+    column_count = m_result->get_width()/m_result->get_size();
 
-    line_count = tsf.data.height/tsf.data.size;
+    line_count = m_result->get_height()/m_result->get_size();
 
     figures_count = column_count*line_count + (column_count*line_count)/2;
 
-    float mnoznik = (float)tsf.data.procent/100;
+    float mnoznik = (float)m_result->get_procent()/100;
     permutation_count = mnoznik*figures_count;
 }

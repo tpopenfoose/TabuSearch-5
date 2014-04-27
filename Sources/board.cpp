@@ -10,23 +10,23 @@ Board::Board(QWidget *parent) : QWidget(parent)
 
 void Board::paintEvent(QPaintEvent *)
 {
-    painter.begin(this);
+    m_painter.begin(this);
 
     QStyleOption opt;
     opt.init(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &m_painter, this);
 
-    for(auto & iter : tsf.result)
-        iter->draw(painter,tsf.data.size, 1);
+    for(auto & iter : m_result.getResult())
+        iter->draw(m_painter,m_result.get_size(), 1);
 
-    painter.end();
+    m_painter.end();
 }
 
-void Board::paintBoard(TSF tsf)
+void Board::paintBoard(const Result & p_result)
 {
-    this->tsf = tsf;
+    m_result = p_result;
 
-    this->setFixedSize(tsf.data.width+4,tsf.data.height+4);
+    setFixedSize(m_result.get_width()+4,m_result.get_height()+4);
 
     update();
 

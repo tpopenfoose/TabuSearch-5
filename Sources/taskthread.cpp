@@ -14,10 +14,10 @@ TaskThread::TaskThread(QObject *parent):
     m_bToSuspend = false;
 }
 
-void TaskThread::insert_data(TSF tsf,int option)
+void TaskThread::insert_data(std::unique_ptr<Result> p_result,int option)
 {
     this->option = option;
-    this->tsf = tsf;
+    m_result = std::move(p_result);
 }
 
 void TaskThread::run()
@@ -25,11 +25,11 @@ void TaskThread::run()
     switch (option)
     {
         case 1:
-            engine->generateFirstResult(tsf.data);
+            m_result = std::move(engine->generateFirstResult(std::move(m_result)));
         break;
 
         case 2:
-            engine->begin(tsf);
+            m_result = std::move(engine->optimized(std::move(m_result)));
         break;
     }
 }

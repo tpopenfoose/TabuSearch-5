@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QWaitCondition>
 #include "globalne.h"
+#include "result.h"
+#include <memory>
 
 class Task;
 class TabuSearch;
@@ -14,7 +16,7 @@ class TaskThread : public QThread
 public:
     TaskThread(QObject *parent = 0);
     void run();
-    void insert_data(TSF tsf, int option);
+    void insert_data(std::unique_ptr<Result> p_result, int option);
     int option;
 
     void suspend(void);
@@ -26,10 +28,9 @@ private:
 
     QWaitCondition m_waitCondt;
 
-    TSF tsf;
+    std::unique_ptr<Result> m_result;
     Task *Taskparent;
     TabuSearch *engine;
-    std::vector<std::shared_ptr<Shape>> result;
 
 friend class TabuSearch;
 friend class TaskMainWindow;

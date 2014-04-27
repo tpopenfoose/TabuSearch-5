@@ -16,12 +16,9 @@
 #include <QFileDialog>
 #include "sharedmemory.h"
 #include "files.h"
-//#include <QSignalTransition>
 
 #include <iostream>
 using namespace std;
-
-//extern SharedMemory memory;
 
 TaskMainWindow::TaskMainWindow(QObject *parent)
 {
@@ -29,6 +26,7 @@ TaskMainWindow::TaskMainWindow(QObject *parent)
     setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowTitleHint);
     Taskparent = (Task*)parent;
     save = true;
+    m_result = std::unique_ptr<Result>(new Result);
 
     createScrollArea();
     createDockBoxes();
@@ -275,8 +273,8 @@ void TaskMainWindow::random_Action(void)
     clearAction->setEnabled(false);
 
     save = false;
-    tsf.data = Taskparent->config->getConfigData();
-    Taskparent->taskthread->insert_data(tsf,1);
+    m_result->set_data(Taskparent->config->getConfigData());
+    Taskparent->taskthread->insert_data(std::move(m_result),1);
     Taskparent->taskthread->start();
 }
 
@@ -291,8 +289,8 @@ void TaskMainWindow::start_Action(void)
     //databaseAction->setEnabled(false);
     clearAction->setEnabled(false);
 
-    tsf.data = Taskparent->config->getConfigData();
-    Taskparent->taskthread->insert_data(tsf,2);
+    m_result->set_data(Taskparent->config->getConfigData());
+    Taskparent->taskthread->insert_data(std::move(m_result),2);
 
     Taskparent->taskthread->start();
 }
@@ -432,235 +430,7 @@ void TaskMainWindow::exit_Action(void)
         }
     }
 }
-/*
-void TaskMainWindow::save_data(void)
-{
-    QTextStream stream(Taskparent->file);
-    QString str;
-    //stream<<TSB.isEmpty()<<endl;
-    stream<<result.isEmpty()<<endl;
 
-    str+=QString::number(tsf.data.width,10);
-    str+=";";
-    str+=QString::number(tsf.data.height,10);
-    str+=";";
-    str+=QString::number(tsf.data.size,10);
-    str+=";";
-    str+=QString::number(tsf.data.procent,10);
-    str+=";";
-    str+=QString::number(tsf.data.iteration,10);
-    str+=";";
-    str+=QString::number(tsf.data.tabusize,10);
-    str+=";";
-    str+=QString::number(tsf.data.tabutime,10);
-    str+=";";
-
-    stream<<str<<endl;
-    stream<<QString::number(tsf.all.size(),10)<<endl;
-
-    for(int i = 0;i<tsf.all.size();i++)
-    {
-        str.clear();
-        str+=QString::number(tsf.all[i].x,10);
-        str+=";";
-        str+=QString::number(tsf.all[i].y,10);
-        str+=";";
-        str+=QString::number(tsf.all[i].figureName,10);
-        str+=";";
-        str+=QString::number(tsf.all[i].pozycja,10);
-
-        stream<<str<<endl;
-    }
-
-    stream<<QString::number(tsf.result.size(),10)<<endl;
-
-    for(int i = 0;i<tsf.result.size();i++)
-    {
-        str.clear();
-        str+=QString::number(tsf.result[i].x,10);
-        str+=";";
-        str+=QString::number(tsf.result[i].y,10);
-        str+=";";
-        str+=QString::number(tsf.result[i].figureName,10);
-        str+=";";
-        str+=QString::number(tsf.result[i].pozycja,10);
-
-        stream<<str<<endl;
-    }
-
-    stream<<QString::number(tsf.rest.size(),10)<<endl;
-
-    for(int i = 0;i<tsf.rest.size();i++)
-    {
-        str.clear();
-        str+=QString::number(tsf.rest[i].x,10);
-        str+=";";
-        str+=QString::number(tsf.rest[i].y,10);
-        str+=";";
-        str+=QString::number(tsf.rest[i].figureName,10);
-        str+=";";
-        str+=QString::number(tsf.rest[i].pozycja,10);
-
-        stream<<str<<endl;
-    }
-
-    if(!result.isEmpty())
-    {
-        stream<<result.size()<<endl;
-
-        for(int i = 0; i < result.size(); i++)
-        {
-            str.clear();
-            str+=QString::number(result[i].x,10);
-            str+=";";
-            str+=QString::number(result[i].y,10);
-            str+=";";
-            str+=QString::number(result[i].figureName,10);
-            str+=";";
-            str+=QString::number(result[i].pozycja,10);
-
-            stream<<str<<endl;
-        }
-
-        stream<<endl<<endl;
-    }*/
-/*
-    if(!TSB.isEmpty())
-    {
-        stream<<TSB.size()<<endl;
-
-        for(int i = 0; i < TSB.size(); i++)
-        {
-            stream<<TSB[i].size()<<endl;
-
-            for(int j = 0; j < TSB[i].size(); j++)
-            {
-                str.clear();
-                str+=QString::number(TSB[i][j].x,10);
-                str+=";";
-                str+=QString::number(TSB[i][j].y,10);
-                str+=";";
-                str+=QString::number(TSB[i][j].figureName,10);
-                str+=";";
-                str+=QString::number(TSB[i][j].pozycja,10);
-
-                stream<<str<<endl;
-            }
-        }
-        stream<<endl<<endl;
-
-        for(int i = 0; i < TSB.size(); i++)
-        {
-            stream<<TSB[i].size()<<endl;
-        }
-    }
-    *//*
-}
-
-void TaskMainWindow::read_data(void)
-{
-    QTextStream in(Taskparent->file);
-    QString line;
-    TSF temp;
-    Figure ctemp;
-    bool ok;
-    int max;
-    bool isTSBEmpty = in.readLine().toInt();
-    cout<<"czy drugi pusty?: "<<isTSBEmpty<<endl;
-
-    line = in.readLine();
-
-    temp.data.width = line.section(';',0,0).toInt(&ok,10);
-    temp.data.height = line.section(';',1,1).toInt(&ok,10);
-    temp.data.size = line.section(';',2,2).toInt(&ok,10);
-    temp.data.procent = line.section(';',3,3).toInt(&ok,10);
-    temp.data.iteration = line.section(';',4,4).toInt(&ok,10);
-    temp.data.tabusize = line.section(';',5,5).toInt(&ok,10);
-    temp.data.tabutime = line.section(';',6,6).toInt(&ok,10);
-
-    Taskparent->config->loadConfig(temp.data);
-
-    line = in.readLine();
-
-    max = line.toInt(&ok,10);
-
-    for(int i = 0; i < max; i++)
-    {
-        line = in.readLine();
-        ctemp.x = line.section(';',0,0).toInt(&ok,10);
-        ctemp.y = line.section(';',1,1).toInt(&ok,10);
-        ctemp.figureName = (FigureName)line.section(';',2,2).toInt(&ok,10);
-        ctemp.pozycja = line.section(';',3,3).toInt(&ok,10);
-
-        temp.all.push_back(ctemp);
-    }
-
-     line = in.readLine();
-     max = line.toInt(&ok,10);
-
-     for(int i = 0;i<max;i++)
-     {
-         line = in.readLine();
-         ctemp.x = line.section(';',0,0).toInt(&ok,10);
-         ctemp.y = line.section(';',1,1).toInt(&ok,10);
-         ctemp.figureName = (FigureName)line.section(';',2,2).toInt(&ok,10);
-         ctemp.pozycja = line.section(';',3,3).toInt(&ok,10);
-
-         temp.result.push_back(ctemp);
-     }
-
-     line = in.readLine();
-     max = line.toInt(&ok,10);
-
-     for(int i = 0;i<max;i++)
-     {
-         line = in.readLine();
-         ctemp.x = line.section(';',0,0).toInt(&ok,10);
-         ctemp.y = line.section(';',1,1).toInt(&ok,10);
-         ctemp.figureName = (FigureName)line.section(';',2,2).toInt(&ok,10);
-         ctemp.pozycja = line.section(';',3,3).toInt(&ok,10);
-
-         temp.rest.push_back(ctemp);
-     }
-
-     tsf = temp;
-     if(!isTSBEmpty)
-     {
-         int result_size = in.readLine().toInt();
-
-         result.clear();
-         for(int i = 0; i < result_size; i++)
-         {
-
-             line = in.readLine();
-
-             ctemp.x = line.section(';',0,0).toInt(&ok,10);
-             ctemp.y = line.section(';',1,1).toInt(&ok,10);
-             ctemp.figureName = (FigureName)line.section(';',2,2).toInt(&ok,10);
-             ctemp.pozycja = line.section(';',3,3).toInt(&ok,10);
-
-             result.push_back(ctemp);
-         }
-     }
-
-     lcd1->display(tsf.result.size());
-     lcd2->display(waste(tsf.result));
-     Taskparent->board1->paintBoard(tsf);
-     Taskparent->board1->show();
-     resultlabel1->show();
-
-     if(!isTSBEmpty)
-     {
-         TSF temptsf = tsf;
-         temptsf.result = result;
-         Taskparent->board2->paintBoard(temptsf);
-         Taskparent->board2->show();
-         resultlabel2->show();
-         lcd3->display(temptsf.result.size());
-         lcd4->display(waste(temptsf.result));
-     }
-}
-*/
 void TaskMainWindow::delete_task(void)
 {
     SharedMemory::Instance()->deleteInstance(Taskparent);
@@ -673,9 +443,9 @@ void TaskMainWindow::thread_finished(void)
     switch (option)
     {
         case 1:
-            tsf = Taskparent->taskthread->tsf;
-            lcd1->display((int)tsf.result.size());
-            lcd2->display(waste(tsf.result));
+            m_result = std::move(Taskparent->taskthread->m_result);
+            lcd1->display((int)m_result->getResult().size());
+            lcd2->display(waste(m_result->getResult()));
 
             saveAction->setEnabled(true);
             loadAction->setEnabled(true);
@@ -685,7 +455,7 @@ void TaskMainWindow::thread_finished(void)
             pauseAction->setEnabled(false);
             clearAction->setEnabled(true);
 
-            Taskparent->board1->paintBoard(tsf);
+            Taskparent->board1->paintBoard(*m_result);
             Taskparent->board1->show();
             resultlabel1->show();
 
@@ -693,12 +463,10 @@ void TaskMainWindow::thread_finished(void)
 
         case 2:
 
-            TSF temptsf = tsf;
-            result = Taskparent->taskthread->result;
-            temptsf.result = result;
-            Taskparent->board2->paintBoard(temptsf);
-            lcd3->display((int)temptsf.result.size());
-            lcd4->display(waste(temptsf.result));
+            m_result = std::move(Taskparent->taskthread->m_result);
+            Taskparent->board2->paintBoard(*m_result);;
+            lcd3->display((int)m_result->getResult().size());
+            lcd4->display(waste(m_result->getResult()));
 
             saveAction->setEnabled(true);
             loadAction->setEnabled(true);
@@ -740,13 +508,12 @@ void TaskMainWindow::update_progress(int value,int all,int time)
 
 int TaskMainWindow::waste(std::vector<std::shared_ptr<Shape>> v)
 {
-    //cout<<"v: "<<v.size()<<endl;
-   int all = tsf.data.height * tsf.data.width;
+   int all = m_result->get_height() * m_result->get_width();
 
    int sum = 0;
 
    for(auto & iter : v)
-       sum += iter->get_area(tsf.data.size);
+       sum += iter->get_area(m_result->get_size());
 
    float p = (float)(all-sum)/all;
 

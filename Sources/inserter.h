@@ -5,6 +5,7 @@
 #include "globalne.h"
 #include <QObject>
 #include <memory>
+#include "result.h"
 
 class Inserter : public QObject
 {
@@ -13,9 +14,9 @@ public:
     explicit Inserter(QObject *parent = 0);
     ~Inserter();
 
-    TSF insert(TSF);
+    std::unique_ptr<Result> insert(std::unique_ptr<Result> p_result);
 private:
-    ConfigData data;
+    std::unique_ptr<Result> m_result;
     std::vector<std::shared_ptr<Shape>> input;
     std::vector<std::shared_ptr<Shape>> output;
 
@@ -43,6 +44,5 @@ private:
     void calculate_new_f_grid(std::shared_ptr<Shape> s);
 
     void init_insert(void);
-    void insert_end(void);
 };
 #endif // INSERTER_H

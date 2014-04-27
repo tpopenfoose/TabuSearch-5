@@ -5,6 +5,7 @@
 
 #include "globalne.h"
 #include <memory>
+#include <result.h>
 
 class TaskThread;
 class Inserter;
@@ -27,13 +28,9 @@ class TabuSearch : public QObject
 public:
 
     explicit TabuSearch(QObject *parent = 0);
-    void generateFirstResult(ConfigData data);
+    std::unique_ptr<Result> generateFirstResult(std::unique_ptr<Result> p_result);
     void clear(void);
-    void begin(TSF tsf);
-
-    TSF generateFirstResultCommandLine(ConfigData data);
-    TSF beginCommandLine(TSF,QString);
-
+    std::unique_ptr<Result> optimized(std::unique_ptr<Result> p_result);
 
 private:
 
@@ -68,7 +65,7 @@ private:
     bool tabu(TabuListElement);
     void tabulist_calculate(void);
 
-    TSF tsf;
+    std::unique_ptr<Result> m_result;
 
     TaskThread* TaskThreadParent;
 

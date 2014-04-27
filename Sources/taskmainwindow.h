@@ -1,8 +1,8 @@
 #ifndef TASKMAINWINDOW_H
 #define TASKMAINWINDOW_H
 
-#include <QtGui>
 #include "globalne.h"
+#include "result.h"
 #include <QToolBar>
 #include <QLCDNumber>
 #include <QProgressBar>
@@ -76,11 +76,10 @@ private:
     QLabel *resultlabel5;
     QLabel *resultlabel6;
 
-
     bool save;
 
     Task* Taskparent;
-    TSF tsf;
+    std::unique_ptr<Result> m_result;
     std::vector<std::shared_ptr<Shape>> result;
 
 

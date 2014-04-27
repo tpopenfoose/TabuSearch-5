@@ -1,17 +1,16 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "globalne.h"
-#include <QtGui>
+#include "result.h"
 #include <QWidget>
 
 class Board : public QWidget
 {
-   Q_OBJECT
 
 public:
 
    Board(QWidget *parent = 0);
+   void paintBoard(const Result & p_result);
 
 protected:
 
@@ -19,13 +18,9 @@ protected:
 
 private:
 
-   QPainter painter;
+   QPainter m_painter;
 
-   TSF tsf;
-
-public slots:
-
-   void paintBoard(TSF);
+   Result m_result;
 };
 
 #endif // Board_H

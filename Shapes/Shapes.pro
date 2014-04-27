@@ -8,7 +8,8 @@ HEADERS += \
     rectangle.h \
     square.h \
     triangle.h \
-    generator.h
+    generator.h \
+    result.h
 
 SOURCES += \
     shape.cpp \
@@ -16,6 +17,7 @@ SOURCES += \
     rectangle.cpp \
     square.cpp \
     triangle.cpp \
-    generator.cpp
+    generator.cpp \
+    result.cpp
 
 CONFIG += c++11
