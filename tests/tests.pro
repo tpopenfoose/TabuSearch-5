@@ -10,3 +10,8 @@ SOURCES += \
     GeneretorTestSuite.cpp
 
 CONFIG += c++11
+
+HEADERS += \
+    ResultMock.h \
+    GeneretorMock.h \
+    ShapeMock.h

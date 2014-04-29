@@ -27,7 +27,7 @@ void TabuSearch::clear(void)
 std::unique_ptr<Result> TabuSearch::generateFirstResult(std::unique_ptr<Result> p_result)
 {
     Generator gen;
-    p_result = std::move(gen.generate(std::move(p_result)));
+    p_result->set_all(gen.generate(*p_result));
 
     p_result = std::move(inserter->insert(std::move(p_result)));
 

@@ -1,4 +1,5 @@
 #include "result.h"
+#include <iostream>
 Result::Result()
 {
 
