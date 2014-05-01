@@ -199,7 +199,7 @@ void TaskMainWindow::createActions(void)
     loadAction = new QAction(QIcon(load_png.c_str()),tr("Wczytaj"), this);
 
     configAction = new QAction(QIcon(config_png.c_str()),tr("Konfiguracja"), this);
-    randomAction = new QAction(QIcon(random_png.c_str()),tr("Generuj Poczatkowe rozwiÄ…zanie"), this);
+    randomAction = new QAction(QIcon(random_png.c_str()),tr("Generuj Poczatkowe rozwiązanie"), this);
     startAction = new QAction(QIcon(play_png.c_str()),tr("Start"), this);
     startAction->setEnabled(false);
     pauseAction = new QAction(QIcon(pausesmall_png.c_str()),tr("Pauza"), this);
@@ -208,7 +208,7 @@ void TaskMainWindow::createActions(void)
 
     databaseAction = new QAction(QIcon(database_png.c_str()),tr("Baza Danych"), this);
     databaseAction->setEnabled(false);
-    clearAction = new QAction(QIcon(clear_png.c_str()),tr("WyczyĹ›Ä‡"), this);
+    clearAction = new QAction(QIcon(clear_png.c_str()),tr("Wyczyść"), this);
     clearAction->setEnabled(false);
 
     minimizeAction = new QAction(QIcon(hide_png.c_str()),tr("Minimalizuj"), this);
@@ -239,7 +239,6 @@ void TaskMainWindow::save_Action(void)
 void TaskMainWindow::load_Action(void)
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("TabuSearch File (*.tbf)"));
-    //cout<<fileName.toStdString()<<endl;
 
     if(!fileName.isEmpty())
     {
@@ -273,6 +272,7 @@ void TaskMainWindow::random_Action(void)
     clearAction->setEnabled(false);
 
     save = false;
+
     m_result->set_data(Taskparent->config->getConfigData());
     Taskparent->taskthread->insert_data(std::move(m_result),1);
     Taskparent->taskthread->start();
@@ -313,7 +313,7 @@ void TaskMainWindow::clear_Action(void)
 {
     QMessageBox msgBox;
     msgBox.setText(tr("Uwaga!"));
-    msgBox.setInformativeText(tr("Dotyczczasowe dane zostanÄ… utracone?"));
+    msgBox.setInformativeText(tr("Dotyczczasowe dane zostaną utracone?"));
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Cancel);
 
@@ -367,7 +367,7 @@ void TaskMainWindow::exit_Action(void)
     if(SharedMemory::Instance()->onlyOneButton())
     {
         QMessageBox msgBox;
-        msgBox.setText(tr("Nie mozna usunÄ…c pierwszego okna."));
+        msgBox.setText(tr("Nie mozna usunąć pierwszego okna."));
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
     }
@@ -376,8 +376,8 @@ void TaskMainWindow::exit_Action(void)
         if(Taskparent->taskthread->isRunning())
         {
             QMessageBox msgBox;
-            msgBox.setText(tr("TrwajÄ… obliczenia."));
-            msgBox.setInformativeText(tr("Czy chcesz zatrzymaÄ‡?"));
+            msgBox.setText(tr("Trwają obliczenia."));
+            msgBox.setInformativeText(tr("Czy chcesz zatrzymać?"));
             msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             int ret = msgBox.exec();
@@ -404,8 +404,8 @@ void TaskMainWindow::exit_Action(void)
             else
             {
                  QMessageBox msgBox;
-                 msgBox.setText(tr("Zmiany zostanÄ… utracone."));
-                 msgBox.setInformativeText(tr("Czy chcesz zapisaÄ‡?"));
+                 msgBox.setText(tr("Zmiany zostaną utracone."));
+                 msgBox.setInformativeText(tr("Czy chcesz zapisać?"));
                  msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
                  msgBox.setDefaultButton(QMessageBox::Save);
                  int ret = msgBox.exec();
@@ -443,10 +443,10 @@ void TaskMainWindow::thread_finished(void)
     switch (option)
     {
         case 1:
+            std::cout<<"thread_finished_1"<<std::endl;
             m_result = std::move(Taskparent->taskthread->m_result);
             lcd1->display((int)m_result->getResult().size());
             lcd2->display(waste(m_result->getResult()));
-
             saveAction->setEnabled(true);
             loadAction->setEnabled(true);
             configAction->setEnabled(true);
@@ -454,11 +454,10 @@ void TaskMainWindow::thread_finished(void)
             startAction->setEnabled(true);
             pauseAction->setEnabled(false);
             clearAction->setEnabled(true);
-
             Taskparent->board1->paintBoard(*m_result);
             Taskparent->board1->show();
             resultlabel1->show();
-
+            std::cout<<"thread_finished_2"<<std::endl;
         break;
 
         case 2:

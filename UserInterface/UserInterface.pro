@@ -1,10 +1,12 @@
 TEMPLATE = lib
-CONFIG += staticlib
+#CONFIG += staticlib
+LIBS += -L../Shapes/debug -lShapes
 INCLUDEPATH += \
     ../Sources \
     ../Shapes
 QT += widgets
 HEADERS += \
+    board.h \
     configwindow.h \
     configtabtwo.h \
     configtabthree.h \
@@ -13,6 +15,7 @@ HEADERS += \
     defaultconfig.h
 
 SOURCES += \
+    board.cpp \
     configwindow.cpp \
     configtabtwo.cpp \
     configtabthree.cpp \

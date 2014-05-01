@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
         void create_actions(void);
 
     protected:
-        void closeEvent( QCloseEvent * event);
+        void closeEvent(QCloseEvent *);
 
     signals:
 

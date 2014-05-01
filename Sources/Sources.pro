@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += staticlib
+#CONFIG += staticlib
 LIBS += -L../Shapes/debug -lShapes -L../UserInterface/debug -lUserInterface
 INCLUDEPATH += \
     ../files \
@@ -18,8 +18,7 @@ HEADERS  += \
     taskbuttongroup.h \
     taskbutton.h \
     task.h \
-    sharedmemory.h \
-    board.h
+    sharedmemory.h
 
 SOURCES += \
     tabusearch.cpp \
@@ -32,8 +31,7 @@ SOURCES += \
     taskbuttongroup.cpp \
     taskbutton.cpp \
     task.cpp \
-    sharedmemory.cpp \
-    board.cpp
+    sharedmemory.cpp
 
 QT += widgets
 CONFIG += c++11

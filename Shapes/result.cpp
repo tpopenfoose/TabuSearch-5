@@ -23,14 +23,14 @@ Result & Result::operator =(const Result & result)
 
 std::vector<std::shared_ptr<Shape> > Result::getResult()
 {
-    std::vector<std::shared_ptr<Shape>> temp;
+    std::vector<std::shared_ptr<Shape>> temp(m_range);
     std::copy(m_result.begin(),m_result.begin() + m_range, temp.begin());
     return temp;
 }
 
 std::vector<std::shared_ptr<Shape> > Result::getRest()
 {
-    std::vector<std::shared_ptr<Shape>> temp;
+    std::vector<std::shared_ptr<Shape>> temp(m_result.size()-m_range);
     std::copy(m_result.begin() + m_range,m_result.end(), temp.begin());
     return temp;
 }
@@ -45,22 +45,10 @@ void Result::set_data(ConfigData p_data)
     m_data = p_data;
 }
 
-void Result::set_result(std::vector<std::shared_ptr<Shape>> p_result)
+void Result::set_result(std::vector<std::shared_ptr<Shape>> p_result, int p_range)
 {
     m_result = p_result;
-    std::copy(p_result.begin(),p_result.end(),m_result.begin());
-    m_range = m_result.size();
-}
-
-void Result::set_rest(std::vector<std::shared_ptr<Shape>> p_rest)
-{
-    m_result = p_rest;
-    std::copy(p_rest.begin(),p_rest.end(),m_result.begin() + m_range);
-}
-
-void Result::set_all(std::vector<std::shared_ptr<Shape>> p_all)
-{
-    m_result = p_all;
+    m_range = p_range;
 }
 
 int Result::get_size() const

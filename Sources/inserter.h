@@ -7,6 +7,20 @@
 #include <memory>
 #include "result.h"
 
+#include <iostream>
+using Matrix = std::vector<std::vector<bool>>;
+
+class Grid
+{
+public:
+    Grid(int width, int height);
+    bool operator==(const Grid& p_grid);
+    Matrix & data();
+
+private:
+    Matrix m_grid;
+};
+
 class Inserter : public QObject
 {
     Q_OBJECT
@@ -18,8 +32,9 @@ public:
 private:
     std::unique_ptr<Result> m_result;
     std::vector<std::shared_ptr<Shape>> input;
-    std::vector<std::shared_ptr<Shape>> output;
 
+    //std::unique_ptr<Grid> test_grid1;
+    //std::unique_ptr<Grid> test_grid2;
     bool** grid;
     bool** f_grid;
 

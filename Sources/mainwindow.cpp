@@ -2,21 +2,16 @@
 #include "sharedmemory.h"
 #include "files.h"
 
-#include <iostream>
-using namespace std;
 #include <QAction>
 #include <QMenu>
 #include <QMenuBar>
 
-//extern SharedMemory memory;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     SharedMemory::Instance()->readScreenSize();
     SharedMemory::Instance()->initMainWindow(this);
-    //memory.readScreenSize();
-    //memory.initMainWindow(this);
 
     create_actions();
 
@@ -54,10 +49,8 @@ void MainWindow::create_connections(void)
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
-void MainWindow::closeEvent( QCloseEvent * event)
+void MainWindow::closeEvent( QCloseEvent *)
 {
-    //qApp->
-   // qApp->closeAllWindows();
     qApp->quit();
 }
 

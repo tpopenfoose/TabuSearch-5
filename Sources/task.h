@@ -34,10 +34,12 @@ private:
     TaskMainWindow *mainwindow;
     TaskThread *taskthread;
 
-   // int actual_count;
 
 friend class TaskMainWindow;
 friend class TabuSearch;
+
+private slots:
+    void random_Action();
     
 signals:
     

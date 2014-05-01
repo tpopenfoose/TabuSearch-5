@@ -17,7 +17,7 @@ void Board::paintEvent(QPaintEvent *)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &m_painter, this);
 
     for(auto & iter : m_result.getResult())
-        iter->draw(m_painter,m_result.get_size(), 1);
+        iter->draw(m_painter, m_result.get_size(), 1);
 
     m_painter.end();
 }

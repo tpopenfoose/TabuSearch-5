@@ -5,6 +5,7 @@
 #include "circle.h"
 #include <QTime>
 #include <memory>
+#include <iostream>
 
 Generator::Generator()
 {

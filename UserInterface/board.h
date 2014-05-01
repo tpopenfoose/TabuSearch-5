@@ -19,7 +19,6 @@ protected:
 private:
 
    QPainter m_painter;
-
    Result m_result;
 };
 

@@ -27,10 +27,11 @@ void TabuSearch::clear(void)
 std::unique_ptr<Result> TabuSearch::generateFirstResult(std::unique_ptr<Result> p_result)
 {
     Generator gen;
-    p_result->set_all(gen.generate(*p_result));
-
+    std::cout<<"generateFirstResult_1"<<std::endl;
+    p_result->set_result(gen.generate(*p_result));
+    std::cout<<"generateFirstResult_2"<<std::endl;
     p_result = std::move(inserter->insert(std::move(p_result)));
-
+    std::cout<<"generateFirstResult_3"<<std::endl;
     return p_result;
 }
 
@@ -43,10 +44,8 @@ void TabuSearch::aspiration(void)
     for(int i = 0; i < BazaTabu_output.size(); i++)
     {
         waste = wasteSum(BazaTabu_output[i]);
-        //if( BazaTabu_output[i].size() > max)
         if( waste < min)
         {
-            //max = BazaTabu_output[i].size();
             min = waste;
             pos = i;
         }
@@ -179,7 +178,7 @@ void TabuSearch::permutate(void)
         Baza_input.push_back(input);
 
         std::unique_ptr<Result> temp_result(new Result(*m_result));
-        temp_result->set_all(input);
+        temp_result->set_result(input);
         temp_result = std::move(inserter->insert(std::move(temp_result)));
 
         Baza_output.push_back(temp_result->getResult());
@@ -221,7 +220,7 @@ void TabuSearch::tabulist_calculate(void)
             BazaTabu_input.push_back(input);
 
             std::unique_ptr<Result> temp_result(new Result(*m_result));
-            temp_result->set_all(input);
+            temp_result->set_result(input);
             temp_result = std::move(inserter->insert(std::move(temp_result)));
 
             Baza_output.push_back(temp_result->getResult());

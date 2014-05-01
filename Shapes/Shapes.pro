@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += staticlib
+#CONFIG += staticlib
 INCLUDEPATH += \
     ../Sources
 HEADERS += \

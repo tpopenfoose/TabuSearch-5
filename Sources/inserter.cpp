@@ -6,6 +6,21 @@
 
 using namespace std;
 
+Grid::Grid(int width, int height)
+{
+    m_grid = Matrix(height, std::vector<bool>(width,false));
+    std::cout<<"m_grid.size(): "<<m_grid.size()<<std::endl;
+}
+bool Grid::operator==(const Grid& p_grid)
+{
+    return m_grid == p_grid.m_grid ? true : false;
+}
+
+Matrix & Grid::data() {
+    return m_grid;
+}
+
+
 Inserter::Inserter(QObject *parent) :
     QObject(parent)
 {
@@ -13,6 +28,7 @@ Inserter::Inserter(QObject *parent) :
 
 Inserter::~Inserter()
 {
+
     for( int i = 0; i < m_result->get_width(); i++ )
         delete [] grid[i];
 
@@ -24,7 +40,6 @@ Inserter::~Inserter()
     delete [] f_grid;
 
     input.clear();
-    output.clear();
 }
 
 void Inserter::init_insert(void)
@@ -42,8 +57,6 @@ void Inserter::init_insert(void)
     new_line = false;
     counter_back = false;
 
-    output.clear();
-
     init_grid();
 
     grid_clear(0);
@@ -52,6 +65,9 @@ void Inserter::init_insert(void)
 
 void Inserter::init_grid(void)
 {
+   // test_grid1 = std::unique_ptr<Grid>(new Grid(m_result->get_width(), m_result->get_height()));
+   // test_grid2 = std::unique_ptr<Grid>(new Grid(m_result->get_width(), m_result->get_height()));
+
     grid = new bool *[m_result->get_width()];
 
     for( int i = 0; i < m_result->get_width(); i++ )
@@ -66,6 +82,7 @@ void Inserter::init_grid(void)
 
     grid_clear(1);
 
+   // std::cout<<"m_result->get_width(): "<<m_result->get_width()<<std::endl;
     column_count = m_result->get_width()/m_result->get_size();
 
     line_count = m_result->get_height()/m_result->get_size();
@@ -73,35 +90,32 @@ void Inserter::init_grid(void)
 
 std::unique_ptr<Result> Inserter::insert(std::unique_ptr<Result> p_result)
 {
+    std::cout<<"insert_1"<<std::endl;
     m_result = std::move(p_result);
     init_insert();
-
+    std::cout<<"insert_2"<<std::endl;
     input = m_result->getAll();
 
     for (counter=0; (counter < input.size()) && (insert_stop == false); counter++)
     {
+        std::cout<<"insert_2_petla_1"<<std::endl;
         calculate_position(input[counter]);
-
+        std::cout<<"insert_2_petla_2"<<std::endl;
         if(!counter_back)
         {
             input[counter]->set_x(pozycja_x);
             input[counter]->set_y(pozycja_y);
 
             input[counter]->fill_grid(grid,m_result->get_size());
-
-            output.push_back(input[counter]);
+            //input[counter]->fill_grid(test_grid1->data(), m_result->get_size());
         }
+        std::cout<<"insert_2_petla_3"<<std::endl;
         counter_back = false;
     }
 
     //insert_end();
-
-    m_result->set_result(output);
-    //auto first = tsf.all.begin() + tsf.result.size();
-    //auto last = tsf.all.end();
-    //std::vector<std::shared_ptr<Shape>> test(first, last);
-    //tsf.rest = test;
-    //tsf.rest = auto(first, last);
+    std::cout<<"insert_3"<<std::endl;
+    m_result->set_result(input, counter);
 
     for( int i = 0; i < m_result->get_width(); i++ )
         delete [] grid[i];
@@ -114,6 +128,7 @@ std::unique_ptr<Result> Inserter::insert(std::unique_ptr<Result> p_result)
     delete [] f_grid;
 
     p_result = std::move(m_result);
+    std::cout<<"insert_4"<<std::endl;
     return p_result;
 }
 
@@ -124,6 +139,7 @@ void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s)
     s->set_x(pozycja_x);
     s->set_y(pozycja_y);
 
+    //s->fill_grid(test_grid2->data(), m_result->get_size());
     s->fill_grid(f_grid, m_result->get_size());
 }
 
@@ -138,6 +154,7 @@ void Inserter::calculate_position(std::shared_ptr<Shape> s)
     s->set_y(pozycja_y);
 
     s->fill_grid(f_grid, m_result->get_size());
+    //s->fill_grid(test_grid2->data(), m_result->get_size());
 
     if( compare_grids() )
     {
@@ -334,23 +351,27 @@ void Inserter::grid_clear(bool gn)
         for( int j = 0; j < m_result->get_height(); j++)
         {
             if(gn)
-                f_grid[i][j] = 0;
+               /* test_grid2->data()[i][j] = 0;*/ f_grid[i][j] = 0;
             else
-                grid[i][j] = 0;
+              /*  test_grid1->data()[i][j] = 0;*/ grid[i][j] = 0;
         }
     }
 }
 
 bool Inserter::compare_grids(void)
 {
+    //return *test_grid1 == *test_grid2 ? true : false;
+   // /*
     for( int i = 0; i < m_result->get_width(); i++)
     {
         for( int j = 0; j < m_result->get_height(); j++ )
         {
             if( (grid[i][j] == 1) && (f_grid[i][j] == 1) )
+            //if( (test_grid1->data()[i][j] == 1) && (test_grid2->data()[i][j] == 1) )
                 return false;
         }
     }
 
     return true;
+  //  */
 }

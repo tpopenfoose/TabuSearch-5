@@ -18,17 +18,12 @@ TaskButtonGroup::TaskButtonGroup(QWidget *parent) :
 
 void TaskButtonGroup::buttonClick(QAbstractButton* button)
 {
-    //if(memory.instanceExist(button))
     if(SharedMemory::Instance()->instanceExist(button))
-    {
-        //memory.getTask(button)->show_window();
         SharedMemory::Instance()->getTask(button)->show_window();
-    }
 
     else
     {
         button->setIcon(QIcon(calculate_png.c_str()));
-        //memory.addInstance();
         SharedMemory::Instance()->addInstance();
     }
 }

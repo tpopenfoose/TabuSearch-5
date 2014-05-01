@@ -4,11 +4,6 @@
 #include "taskbuttongroup.h"
 #include "taskbutton.h"
 
-#include <iostream>
-using namespace std;
-
-//extern SharedMemory memory;
-
 MainScreen::MainScreen(QWidget *parent):
     QScrollArea(parent)
 {
@@ -16,7 +11,6 @@ MainScreen::MainScreen(QWidget *parent):
 
     innerScreen = new QWidget(this);
 
-    //memory.createMainScreen(innerScreen);
     SharedMemory::Instance()->createMainScreen(innerScreen);
 
     setWidget(innerScreen);

@@ -12,9 +12,7 @@ public:
     virtual std::vector<std::shared_ptr<Shape>> getResult();
     virtual std::vector<std::shared_ptr<Shape>> getRest();
     virtual std::vector<std::shared_ptr<Shape>> getAll();
-    virtual void set_result(std::vector<std::shared_ptr<Shape>> p_result);
-    virtual void set_rest(std::vector<std::shared_ptr<Shape>> p_rest);
-    virtual void set_all(std::vector<std::shared_ptr<Shape>> p_all);
+    virtual void set_result(std::vector<std::shared_ptr<Shape>> p_result, int p_range = 0);
     virtual void set_data(ConfigData p_data);
     Result & operator =(const Result & result);
     virtual int get_size() const;
