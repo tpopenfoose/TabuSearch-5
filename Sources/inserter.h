@@ -9,6 +9,7 @@
 
 #include <iostream>
 using Matrix = std::vector<std::vector<bool>>;
+using Pair=std::pair<int, int>;
 
 class Grid
 {
@@ -29,6 +30,7 @@ public:
     ~Inserter();
 
     std::unique_ptr<Result> insert(std::unique_ptr<Result> p_result);
+
 private:
     std::unique_ptr<Result> m_result;
     std::vector<std::shared_ptr<Shape>> input;
@@ -38,12 +40,12 @@ private:
     bool** grid;
     bool** f_grid;
 
-    int pozycja_x;
-    int pozycja_y;
+    int m_maximal_y;
+    int m_maximal_x;
 
     int current_line;
     int current_column;
-    int counter;
+    unsigned int counter;
     bool counter_back;
     bool insert_stop;
     bool new_line;
@@ -53,10 +55,19 @@ private:
     void init_grid(void);
     void grid_clear(bool);
 
-    bool compare_grids(void);
+    bool shapes_overlines(void);
 
-    void calculate_position(std::shared_ptr<Shape> s);
-    void calculate_new_f_grid(std::shared_ptr<Shape> s);
+    Pair calculate_position(std::shared_ptr<Shape> s);
+    void calculate_new_f_grid(std::shared_ptr<Shape> s, Pair p_coordinates);
+    void delete_grids();
+    Pair fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_non_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Pair fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates);
 
     void init_insert(void);
 };

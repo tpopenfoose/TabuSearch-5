@@ -21,8 +21,10 @@ double Rectangle::get_area(int p_size)
 }
 
 //void Rectangle::fill_grid(std::vector<std::vector<bool> > &p_grid, int p_size)
-void Rectangle::fill_grid(bool** p_grid, int p_size)
+void Rectangle::fill_grid(bool** p_grid, int p_size, int p_x, int p_y)
 {
+    m_x = p_x;
+    m_y = p_y;
     for (int i = m_x;i<m_x+p_size;i++) {
         for(int j = m_y;j<m_y+(p_size-10);j++)
             p_grid[i][j] = 1;
