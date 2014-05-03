@@ -1,41 +1,34 @@
 #ifndef TASKTHREAD_H
 #define TASKTHREAD_H
 
-#include <QThread>
 #include <QWaitCondition>
 #include "globalne.h"
 #include "result.h"
 #include <memory>
 
-class Task;
 class TabuSearch;
-class TaskMainWindow;
 
-class TaskThread : public QThread
+class TaskThread
 {
 public:
-    TaskThread(QObject *parent = 0);
-    void run();
-    void insert_data(std::unique_ptr<Result> p_result, int option);
-    int option;
+    TaskThread();
+
+    std::unique_ptr<Result> start_thread(std::unique_ptr<Result> p_result, int p_option);
 
     void suspend(void);
     void resume(void);
+    TabuSearch *engine;
 
 private:
-
+    void run_in_thread();
     bool m_bToSuspend;
-
+    int m_option;
     QWaitCondition m_waitCondt;
 
     std::unique_ptr<Result> m_result;
-    Task *Taskparent;
-    TabuSearch *engine;
+
 
 friend class TabuSearch;
-friend class TaskMainWindow;
-friend class Task;
-
 };
 
 #endif // TASKTHREAD_H

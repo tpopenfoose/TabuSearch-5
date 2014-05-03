@@ -5,6 +5,7 @@ SUBDIRS = \
     files \
     Shapes \
     UserInterface \
+    task_main_window \
     Sources \
     gmock-$$GMOCK_VERSION \
     tests \

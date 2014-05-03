@@ -92,10 +92,10 @@ std::unique_ptr<Result> Inserter::insert(std::unique_ptr<Result> p_result)
     input = m_result->getAll();
     Pair l_coordinates;
 
-    for (counter=0; (counter < input.size()) && (insert_stop == false); counter++)
+    for (counter=0; (counter < input.size()) && !insert_stop; counter++)
     {
         l_coordinates = calculate_position(input[counter]);
-        if(!counter_back)
+        if(!counter_back && !insert_stop)
             input[counter]->fill_grid(grid,m_result->get_size(), l_coordinates.first, l_coordinates.second);
 
         counter_back = false;
@@ -122,10 +122,10 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
         l_coordinates = fit_non_overlaping_shape(s, l_coordinates);
 
     if( shapes_overlines() ) {
-        if(++current_column == column_count) {
-            if( ++current_line == line_count ) {
+        if(++current_column >= column_count) {
+            if( ++current_line >= line_count ) {
                 insert_stop = true;
-                return {0,0};
+                return Pair(-1,-1);
             } else {
                 current_column = 0;
                 new_line = true;
@@ -140,10 +140,10 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
     }
 
     if( !new_line ) {
-        if( ++current_column == column_count ) {
-            if( ++current_line == line_count ) {
+        if( ++current_column >= column_count ) {
+            if( ++current_line >= line_count ) {
                 insert_stop = true;
-                return {0,0};
+                return Pair(-1,-1);
             } else
                 current_column = 0;
         }

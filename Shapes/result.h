@@ -9,7 +9,8 @@ class Result
 public:
     Result();
     Result(const Result & result);
-    virtual std::vector<std::shared_ptr<Shape>> getResult();
+    int waste() const;
+    virtual std::vector<std::shared_ptr<Shape>> getResult() const;
     virtual std::vector<std::shared_ptr<Shape>> getRest();
     virtual std::vector<std::shared_ptr<Shape>> getAll();
     virtual void set_result(std::vector<std::shared_ptr<Shape>> p_result, int p_range = 0);

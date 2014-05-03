@@ -1,47 +1,44 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <QtGui>
 #include "globalne.h"
+#include "result.h"
+#include "configwindow.h"
+#include "taskthread.h"
+#include "taskmainwindow.h"
 
-class Board;
-class ConfigWindow;
-class TabuSearch;
-class Inserter;
-class TaskMainWindow;
-class TaskThread;
+#include <QtGui>
+#include <memory>
 
 class Task : public QObject
 {
     Q_OBJECT
 public:
     explicit Task(QObject *parent = 0);
-
     void show_window(void);
-
     virtual ~Task();
-
 private:
-
     QFile *file;
-
-    //QVector<Center> first;
-
-    Board *board1;
-    Board *board2;
+    std::unique_ptr<Result> m_result;
     ConfigWindow *config;
-
     TaskMainWindow *mainwindow;
     TaskThread *taskthread;
-
-
-friend class TaskMainWindow;
-friend class TabuSearch;
+    int m_option;
+    void thread_finished(int p_action);
 
 private slots:
     void random_Action();
+
+    void start_Action();
+    void pause_Action(bool toggle);
+    void config_Action();
+    void delete_task();
+    void exit_action();
     
 signals:
+
+    void finished(int p_action);
+    void exit(bool);
     
 public slots:
     

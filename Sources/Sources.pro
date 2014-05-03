@@ -1,10 +1,14 @@
 TEMPLATE = lib
 #CONFIG += staticlib
-LIBS += -L../Shapes/debug -lShapes -L../UserInterface/debug -lUserInterface
+LIBS += \
+    -L../Shapes/debug -lShapes \
+    -L../UserInterface/debug -lUserInterface \
+    -L../task_main_window/debug -ltask_main_window
 INCLUDEPATH += \
     ../files \
     ../Shapes \
-    ../UserInterface
+    ../UserInterface \
+    ../task_main_window
 
 HEADERS  += \
     tabusearch.h \
@@ -13,12 +17,11 @@ HEADERS  += \
     mainwindow.h \
     mainscreen.h \
     taskthread.h \
-    taskmainwindow.h \
     tasklayout.h \
     taskbuttongroup.h \
     taskbutton.h \
     task.h \
-    sharedmemory.h
+    sharedmemory.h \
 
 SOURCES += \
     tabusearch.cpp \
@@ -26,12 +29,11 @@ SOURCES += \
     mainwindow.cpp \
     mainscreen.cpp \
     taskthread.cpp \
-    taskmainwindow.cpp \
     tasklayout.cpp \
     taskbuttongroup.cpp \
     taskbutton.cpp \
     task.cpp \
-    sharedmemory.cpp
+    sharedmemory.cpp \
 
 QT += widgets
 CONFIG += c++11

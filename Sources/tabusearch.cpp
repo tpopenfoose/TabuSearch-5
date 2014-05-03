@@ -11,12 +11,12 @@ using namespace std;
 
 extern SharedMemory memory;
 
-TabuSearch::TabuSearch(QObject *parent) :
-    QObject(parent)
+TabuSearch::TabuSearch(TaskThread *parent) :
+    QObject()
 {
     inserter = new Inserter();
 
-    TaskThreadParent = (TaskThread*)this->parent();
+    TaskThreadParent = parent;
 }
 
 void TabuSearch::clear(void)
@@ -27,11 +27,8 @@ void TabuSearch::clear(void)
 std::unique_ptr<Result> TabuSearch::generateFirstResult(std::unique_ptr<Result> p_result)
 {
     Generator gen;
-    std::cout<<"generateFirstResult_1"<<std::endl;
     p_result->set_result(gen.generate(*p_result));
-    std::cout<<"generateFirstResult_2"<<std::endl;
     p_result = std::move(inserter->insert(std::move(p_result)));
-    std::cout<<"generateFirstResult_3"<<std::endl;
     return p_result;
 }
 

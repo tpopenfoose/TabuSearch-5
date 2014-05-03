@@ -21,7 +21,22 @@ Result & Result::operator =(const Result & result)
     return *this;
 }
 
-std::vector<std::shared_ptr<Shape> > Result::getResult()
+int Result::waste() const
+{
+   int all = m_data.height * m_data.width;
+
+   int sum = 0;
+
+   for(auto & iter : getResult())
+       sum += iter->get_area(m_data.size);
+
+   float p = (float)(all-sum)/all;
+
+
+   return 100*p;
+}
+
+std::vector<std::shared_ptr<Shape> > Result::getResult() const
 {
     std::vector<std::shared_ptr<Shape>> temp(m_range);
     std::copy(m_result.begin(),m_result.begin() + m_range, temp.begin());

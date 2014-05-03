@@ -27,7 +27,7 @@ class TabuSearch : public QObject
 
 public:
 
-    explicit TabuSearch(QObject *parent = 0);
+    explicit TabuSearch(TaskThread*parent = 0);
     std::unique_ptr<Result> generateFirstResult(std::unique_ptr<Result> p_result);
     void clear(void);
     std::unique_ptr<Result> optimized(std::unique_ptr<Result> p_result);

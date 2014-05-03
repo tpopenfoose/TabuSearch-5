@@ -1,38 +1,82 @@
 #include "task.h"
-#include "board.h"
-#include "configwindow.h"
-#include "taskmainwindow.h"
 #include "sharedmemory.h"
-#include "taskthread.h"
 #include "tabusearch.h"
 #include <iostream>
-
-using namespace std;
 
 extern SharedMemory memory;
 
 Task::Task(QObject *parent) :
     QObject(parent)
 {
-    board1 = new Board();
-    board2 = new Board();
+    m_result = std::unique_ptr<Result>(new Result);
 
     config = new ConfigWindow();
     taskthread = new TaskThread();
-    mainwindow = new TaskMainWindow(this);
+    mainwindow = new TaskMainWindow();
     mainwindow->show();
 
     connect(taskthread->engine,SIGNAL(stats(int,int,int)),mainwindow,SLOT(update_progress(int,int,int)));
-    //connect(mainwindow->randomAction,SIGNAL(triggered()),this,SLOT(random_Action()));
+    connect(mainwindow,SIGNAL(random_button_clicked()),this,SLOT(random_Action()));
+    connect(mainwindow,SIGNAL(start_button_clicked()),this,SLOT(start_Action()));
+    connect(mainwindow,SIGNAL(pause_button_clicked(bool)),this,SLOT(pause_Action(bool)));
+    connect(mainwindow,SIGNAL(config_button_clicked()),this,SLOT(config_Action()));
+    connect(mainwindow,SIGNAL(exit_button_clicked()),this,SLOT(exit_action()));
+    connect(mainwindow,SIGNAL(delete_task()),this,SLOT(delete_task()));
+    connect(this,SIGNAL(finished(int)),mainwindow,SLOT(thread_finished(int)));
+    connect(this,SIGNAL(exit(bool)),mainwindow,SLOT(process_exit(bool)));
 }
 
 void Task::random_Action()
 {
-    //cout<<"random_test1"<<endl;
-    //m_result->set_data(Taskparent->config->getConfigData());
-    //cout<<"random_test2"<<endl;
-    //Taskparent->taskthread->insert_data(std::move(m_result),1);
-    //Taskparent->taskthread->start();
+    m_result->set_data(config->getConfigData());
+    m_result = std::move(taskthread->start_thread(std::move(m_result), 1));
+    thread_finished(1);
+}
+
+void Task::start_Action()
+{
+    m_result->set_data(config->getConfigData());
+    m_result = std::move(taskthread->start_thread(std::move(m_result), 2));
+    thread_finished(2);
+}
+
+void Task::thread_finished(int p_action)
+{
+    switch (p_action)
+    {
+        case 1:
+            mainwindow->display_result(*m_result,1);
+        break;
+
+        case 2:
+            mainwindow->display_result(*m_result,2);
+        break;
+    }
+
+    emit finished(p_action);
+}
+
+void Task::pause_Action(bool toggle)
+{
+    if(toggle)
+        taskthread->suspend();
+    else
+        taskthread->resume();
+}
+
+void Task::config_Action()
+{
+    config->show();
+}
+
+void Task::exit_action()
+{
+    emit exit(SharedMemory::Instance()->onlyOneButton());
+}
+
+void Task::delete_task()
+{
+    SharedMemory::Instance()->deleteInstance(this);
 }
 
 void Task::show_window(void)

@@ -2,27 +2,30 @@
 #include "task.h"
 #include "tabusearch.h"
 
+#include <thread>
 #include <iostream>
 
 using namespace std;
 
-TaskThread::TaskThread(QObject *parent):
-    QThread(parent)
+TaskThread::TaskThread()
 {
-    Taskparent = (Task*)parent;
     engine = new TabuSearch(this);
     m_bToSuspend = false;
 }
 
-void TaskThread::insert_data(std::unique_ptr<Result> p_result,int option)
+std::unique_ptr<Result> TaskThread::start_thread(std::unique_ptr<Result> p_result,int p_option)
 {
-    this->option = option;
+    m_option = p_option;
     m_result = std::move(p_result);
+    std::thread worker_thread(&TaskThread::run_in_thread, this);
+    worker_thread.join();
+    p_result = std::move(m_result);
+    return p_result;
 }
 
-void TaskThread::run()
+void TaskThread::run_in_thread()
 {
-    switch (option)
+    switch (m_option)
     {
         case 1:
             m_result = std::move(engine->generateFirstResult(std::move(m_result)));

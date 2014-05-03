@@ -1,12 +1,16 @@
-#QT       += core gui
 INCLUDEPATH =+ \
     ../Sources
     ../Shapes
 
 TEMPLATE = app
 SOURCES += main.cpp
-LIBS += -L../files/debug -L../Sources/debug -L../UserInterface/debug -L../Shapes/debug \
-    -lSources -lUserInterface -lShapes -lfiles
+LIBS += \
+    -L../files/debug -lfiles \
+    -L../Sources/debug -lSources \
+    -L../UserInterface/debug -lUserInterface \
+    -L../Shapes/debug -lShapes \
+    -L../task_main_window/debug -ltask_main_window
+
 TARGET = ../TabuSearch
 QT += widgets
 CONFIG += c++11

@@ -9,7 +9,12 @@
 
 #include <iostream>
 using Matrix = std::vector<std::vector<bool>>;
-using Pair=std::pair<int, int>;
+//using Pair=std::pair<int, int>;
+
+class Pair : public std::pair<int, int>
+{
+    using std::pair<int, int>::pair;
+};
 
 class Grid
 {
