@@ -1,13 +1,15 @@
-TEMPLATE = lib
-#CONFIG += staticlib
+! include( ../common.pri ) {
+    error( "Couldn't find the common.pri file!" )
+}
+
 LIBS += \
-    -L../Shapes/debug -lShapes \
-    -L../UserInterface/debug -lUserInterface \
-    -L../task_main_window/debug -ltask_main_window
+    -lconfig_tab \
+    -lShapes \
+    -ltask_main_window
 INCLUDEPATH += \
     ../files \
     ../Shapes \
-    ../UserInterface \
+    ../config_tab \
     ../task_main_window
 
 HEADERS  += \
@@ -34,6 +36,3 @@ SOURCES += \
     taskbutton.cpp \
     task.cpp \
     sharedmemory.cpp \
-
-QT += widgets
-CONFIG += c++11

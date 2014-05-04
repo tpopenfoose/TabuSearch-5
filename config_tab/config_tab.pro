@@ -1,10 +1,13 @@
-TEMPLATE = lib
-#CONFIG += staticlib
-LIBS += -L../Shapes/debug -lShapes
+! include( ../common.pri ) {
+    error( "Couldn't find the common.pri file!" )
+}
+
+LIBS += -lShapes
+
 INCLUDEPATH += \
     ../Sources \
     ../Shapes
-QT += widgets
+
 HEADERS += \
     configwindow.h \
     configtabtwo.h \
@@ -19,5 +22,3 @@ SOURCES += \
     configtabthree.cpp \
     configtabone.cpp \
     configtab.cpp
-
-CONFIG += c++11

@@ -1,6 +1,9 @@
-TEMPLATE = lib
-#CONFIG += staticlib
-LIBS += -L../Shapes/debug -lShapes
+! include( ../common.pri ) {
+    error( "Couldn't find the common.pri file!" )
+}
+
+LIBS += \
+    -lShapes
 INCLUDEPATH += \
     ../files \
     ../Shapes \
@@ -23,6 +26,3 @@ SOURCES += \
     scrollarea.cpp \
     messagebox.cpp \
     board.cpp
-
-QT += widgets
-CONFIG += c++11

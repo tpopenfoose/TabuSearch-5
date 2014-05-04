@@ -1,4 +1,5 @@
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += resources
 HEADERS = files.h
 RESOURCES = files.qrc
+DESTDIR = ../libs

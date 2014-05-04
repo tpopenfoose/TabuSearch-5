@@ -4,7 +4,9 @@ INCLUDEPATH += \
     ../Shapes \
     ../gmock-1.7.0/gtest/include \
     ../gmock-1.7.0/include
-LIBS += -L../gmock-1.7.0 -L../Shapes/debug -lgmock-1.7.0 -lShapes
+LIBS += -L../libs \
+    -lgmock-1.7.0 \
+    -lShapes
 SOURCES += \
     main.cpp \
     GeneretorTestSuite.cpp

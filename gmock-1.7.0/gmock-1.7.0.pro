@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG = staticlib
-
+DESTDIR = ../libs
 #DESTDIR = lib
 TARGET = gmock-1.7.0
 

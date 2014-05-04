@@ -1,5 +1,7 @@
-TEMPLATE = lib
-#CONFIG += staticlib
+! include( ../common.pri ) {
+    error( "Couldn't find the common.pri file!" )
+}
+
 INCLUDEPATH += \
     ../Sources
 HEADERS += \
@@ -19,5 +21,3 @@ SOURCES += \
     triangle.cpp \
     generator.cpp \
     result.cpp
-
-CONFIG += c++11

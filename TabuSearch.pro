@@ -4,7 +4,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
     files \
     Shapes \
-    UserInterface \
+    config_tab \
     task_main_window \
     Sources \
     gmock-$$GMOCK_VERSION \
