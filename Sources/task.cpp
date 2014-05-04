@@ -23,25 +23,25 @@ Task::Task(QObject *parent) :
     connect(mainwindow,SIGNAL(exit_button_clicked()),this,SLOT(exit_action()));
     connect(mainwindow,SIGNAL(delete_task()),this,SLOT(delete_task()));
     connect(this,SIGNAL(finished(int)),mainwindow,SLOT(thread_finished(int)));
+    connect(taskthread,SIGNAL(finished(int)),this,SLOT(thread_finished(int)));
     connect(this,SIGNAL(exit(bool)),mainwindow,SLOT(process_exit(bool)));
 }
 
 void Task::random_Action()
 {
     m_result->set_data(config->getConfigData());
-    m_result = std::move(taskthread->start_thread(std::move(m_result), 1));
-    thread_finished(1);
+    taskthread->start_thread(std::move(m_result), 1);
 }
 
 void Task::start_Action()
 {
     m_result->set_data(config->getConfigData());
-    m_result = std::move(taskthread->start_thread(std::move(m_result), 2));
-    thread_finished(2);
+    taskthread->start_thread(std::move(m_result), 2);
 }
 
 void Task::thread_finished(int p_action)
 {
+    m_result = std::move(taskthread->get_result());
     switch (p_action)
     {
         case 1:

@@ -24,7 +24,7 @@ private:
     TaskMainWindow *mainwindow;
     TaskThread *taskthread;
     int m_option;
-    void thread_finished(int p_action);
+
 
 private slots:
     void random_Action();
@@ -34,6 +34,7 @@ private slots:
     void config_Action();
     void delete_task();
     void exit_action();
+    void thread_finished(int p_action);
     
 signals:
 

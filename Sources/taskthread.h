@@ -8,16 +8,23 @@
 
 class TabuSearch;
 
-class TaskThread
+class TaskThread : public QObject
 {
+    Q_OBJECT
 public:
     TaskThread();
 
-    std::unique_ptr<Result> start_thread(std::unique_ptr<Result> p_result, int p_option);
+    void start_thread(std::unique_ptr<Result> p_result, int p_option);
 
     void suspend(void);
     void resume(void);
     TabuSearch *engine;
+
+    std::unique_ptr<Result> get_result();
+
+signals:
+
+    void finished(int p_option);
 
 private:
     void run_in_thread();
