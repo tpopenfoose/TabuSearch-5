@@ -1,9 +1,9 @@
 TEMPLATE = app
 INCLUDEPATH += \
-    ../Sources \
     ../Shapes \
     ../gmock-1.7.0/gtest/include \
-    ../gmock-1.7.0/include
+    ../gmock-1.7.0/include \
+    ../config_tab
 LIBS += -L../libs \
     -lgmock-1.7.0 \
     -lShapes

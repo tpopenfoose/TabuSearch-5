@@ -3,7 +3,8 @@
 }
 
 INCLUDEPATH += \
-    ../Sources
+    ../config_tab
+
 HEADERS += \
     shape.h \
     circle.h \

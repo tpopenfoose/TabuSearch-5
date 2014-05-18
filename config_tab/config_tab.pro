@@ -14,7 +14,8 @@ HEADERS += \
     configtabthree.h \
     configtabone.h \
     configtab.h \
-    defaultconfig.h
+    defaultconfig.h \
+    config_data.h
 
 SOURCES += \
     configwindow.cpp \

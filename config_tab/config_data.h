@@ -1,5 +1,5 @@
-#ifndef GLOBALNE_H
-#define GLOBALNE_H
+#ifndef CONFIG_DATA_H
+#define CONFIG_DATA_H
 
 struct ConfigData
 {
@@ -12,4 +12,4 @@ struct ConfigData
     int tabutime;
 };
 
-#endif // GLOBALNE_H
+#endif // CONFIG_DATA_H

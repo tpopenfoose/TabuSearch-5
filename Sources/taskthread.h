@@ -2,7 +2,6 @@
 #define TASKTHREAD_H
 
 #include <QWaitCondition>
-#include "globalne.h"
 #include "result.h"
 #include <memory>
 

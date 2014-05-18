@@ -2,11 +2,9 @@
 #define CONFIGTABTHREE_H
 
 #include <QtGui>
-
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
-
 #include "configtab.h"
 
 class ConfigTabThree : public ConfigTab

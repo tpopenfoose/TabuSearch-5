@@ -2,7 +2,6 @@
 #define INSERTER_H
 
 #include <QVector>
-#include "globalne.h"
 #include <QObject>
 #include <memory>
 #include "result.h"

@@ -15,7 +15,6 @@ INCLUDEPATH += \
 HEADERS  += \
     tabusearch.h \
     inserter.h \
-    globalne.h \
     mainwindow.h \
     mainscreen.h \
     taskthread.h \

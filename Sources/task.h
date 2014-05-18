@@ -1,7 +1,6 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include "globalne.h"
 #include "result.h"
 #include "configwindow.h"
 #include "taskthread.h"

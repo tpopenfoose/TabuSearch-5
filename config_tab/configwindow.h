@@ -2,7 +2,6 @@
 #define CONFIG_H
 
 #include <QtGui>
-#include "globalne.h"
 #include "configtab.h"
 #include <QStackedLayout>
 #include <QTabBar>

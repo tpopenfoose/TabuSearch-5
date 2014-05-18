@@ -7,7 +7,7 @@ LIBS += \
 INCLUDEPATH += \
     ../files \
     ../Shapes \
-    ../Sources
+    ../config_tab
 
 HEADERS  += \
     taskmainwindow.h \

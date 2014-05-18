@@ -2,7 +2,7 @@
 #define CONFIGTAB_H
 
 #include <QWidget>
-#include "globalne.h"
+#include "config_data.h"
 
 class ConfigTab : public QWidget
 {

@@ -1,8 +1,8 @@
 #ifndef RESULT_H
 #define RESULT_H
 #include "shape.h"
-#include "globalne.h"
 #include <memory>
+#include "config_data.h"
 
 class Result
 {

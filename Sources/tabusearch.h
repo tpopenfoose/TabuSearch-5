@@ -3,7 +3,6 @@
 
 #include <QtGui>
 
-#include "globalne.h"
 #include <memory>
 #include <result.h>
 
@@ -68,8 +67,6 @@ private:
     std::unique_ptr<Result> m_result;
 
     TaskThread* TaskThreadParent;
-
-
 
 signals:
 
