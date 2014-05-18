@@ -14,7 +14,7 @@ class Task : public QObject
     Q_OBJECT
 public:
     explicit Task(QObject *parent = 0);
-    void show_window(void);
+    void show_window(void) const;
     virtual ~Task();
 private:
     QFile *file;

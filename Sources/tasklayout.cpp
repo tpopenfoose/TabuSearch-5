@@ -4,12 +4,12 @@
 
 using namespace std;
 
-TaskLayout::TaskLayout(QWidget *parent, int wid)
+TaskLayout::TaskLayout(int width, QWidget *parent)
     : QLayout(parent)
 {
-    int column_count = (wid)/200;
+    int column_count = (width)/200;
     int margin = 10;
-    space = (wid-(column_count*200)-(2*margin))/(column_count-1);
+    space = (width-(column_count*200)-(2*margin))/(column_count-1);
 
     setContentsMargins(margin, margin, margin, margin);
 }

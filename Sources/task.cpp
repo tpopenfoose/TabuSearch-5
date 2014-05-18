@@ -6,7 +6,7 @@
 Task::Task(QObject *parent) :
     QObject(parent)
 {
-    connect(this, SIGNAL(deleted(Task*)),(MainScreen*)parent, SLOT(deleteInstance(Task*)));
+    connect(this, SIGNAL(deleted(Task*)),(MainScreen*)parent, SLOT(delete_instance(Task*)));
     m_result = std::unique_ptr<Result>(new Result);
 
     config = new ConfigWindow();
@@ -70,7 +70,7 @@ void Task::config_Action()
 
 void Task::exit_action()
 {
-    emit exit(((MainScreen*)parent())->onlyOneButton());
+    emit exit(((MainScreen*)parent())->only_one_button());
 }
 
 void Task::delete_task()
@@ -78,7 +78,7 @@ void Task::delete_task()
     emit deleted(this);
 }
 
-void Task::show_window(void)
+void Task::show_window(void) const
 {
     mainwindow->show();
 }

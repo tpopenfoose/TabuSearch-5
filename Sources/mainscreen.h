@@ -13,28 +13,28 @@ class MainScreen : public QScrollArea
 {
     Q_OBJECT
 public:
-
     MainScreen(QWidget * parent = 0);
-    bool onlyOneButton();
+    bool only_one_button();
 
 private:
-
-    QWidget *innerScreen;
-    QRect screensize;
+    QRect m_screen_size;
+    std::unique_ptr<QWidget> m_inner_screen;
     std::unique_ptr<TaskLayout> m_main_layout;
     std::unique_ptr<QButtonGroup> m_button_group;
     std::deque<std::unique_ptr<Task>> m_task_list;
 
-    bool instanceExist(QAbstractButton*);
-    Task* getTask(QAbstractButton*);
+    bool instance_exist(QAbstractButton*p_button);
+    const Task& get_task(QAbstractButton*p_button);
     void add_instance();
+    void add_button();
+    void create_inner_screen();
+    int get_position(QAbstractButton* p_button);
+
 public slots:
-    void buttonClick(QAbstractButton* button);
+    void button_click(QAbstractButton* p_button);
 
 private slots:
-
-    void deleteInstance(Task* task);
-
+    void delete_instance(Task* p_task);
 };
 
 #endif // MAINSCREEN_H

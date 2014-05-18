@@ -1,89 +1,88 @@
+#include <QApplication>
+#include <QDesktopWidget>
+
 #include "mainscreen.h"
 #include "tasklayout.h"
 #include "taskbutton.h"
-#include <QApplication>
-#include <QDesktopWidget>
 #include "files.h"
-#include <iostream>
-#include <algorithm>
 
 MainScreen::MainScreen(QWidget *parent):
     QScrollArea(parent)
 {
     setWidgetResizable(true);
-    screensize = QApplication::desktop()->availableGeometry();
+    m_screen_size = QApplication::desktop()->availableGeometry();
 
-    innerScreen = new QWidget(this);
-
-    m_main_layout.reset(new TaskLayout(innerScreen, screensize.width()));
+    create_inner_screen();
 
     m_button_group.reset(new QButtonGroup);
+    add_button();
 
-    innerScreen->setLayout(m_main_layout.get());
-    innerScreen->setMaximumWidth(screensize.width()-19);
+    setWidget(m_inner_screen.get());
 
-    TaskButton *button = new TaskButton();
-    m_main_layout->addWidget(button);
-    m_button_group->addButton(button);
+    connect(m_button_group.get() , SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(button_click(QAbstractButton*)));
+}
 
-    setWidget(innerScreen);
+void MainScreen::add_button()
+{
+    TaskButton *l_button = new TaskButton();
+    m_main_layout->addWidget(l_button);
+    m_button_group->addButton(l_button);
+}
 
-    connect(m_button_group.get() , SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(buttonClick(QAbstractButton*)));
+void MainScreen::create_inner_screen()
+{
+    m_inner_screen.reset(new QWidget(this));
+    m_main_layout.reset(new TaskLayout(m_screen_size.width()));
+    m_inner_screen->setLayout(m_main_layout.get());
+    m_inner_screen->setMaximumWidth(m_screen_size.width()-19);
 }
 
 void MainScreen::add_instance()
 {
-    TaskButton* button = new TaskButton();
-    m_main_layout->addWidget(button);
-    m_button_group->addButton(button);
+    add_button();
     m_task_list.emplace_back(new Task(this));
 }
 
-void MainScreen::deleteInstance(Task* task)
+void MainScreen::delete_instance(Task* p_task)
 {
-    std::unique_ptr<Task> l_task(task);
-    auto element = std::find(m_task_list.begin(), m_task_list.end(), l_task);
-    int pos = element - m_task_list.begin();
+    std::unique_ptr<Task> l_task(p_task);
+    auto l_element = std::find(m_task_list.begin(), m_task_list.end(), l_task);
+    int l_index = l_element - m_task_list.begin();
 
-    std::shared_ptr<QPushButton> l_button((QPushButton*)(m_button_group->buttons().at(pos)));
+    std::shared_ptr<QPushButton> l_button((QPushButton*)(m_button_group->buttons().at(l_index)));
     m_button_group->removeButton(l_button.get());
     m_main_layout->removeWidget(l_button.get());
-    element->release();
-    m_task_list.erase(element);
+    l_element->release();
+    m_task_list.erase(l_element);
 }
 
-bool MainScreen::onlyOneButton()
+bool MainScreen::only_one_button()
 {
     return (m_button_group->buttons().size() == 1) ? true : false;
 }
 
-void MainScreen::buttonClick(QAbstractButton* button)
+void MainScreen::button_click(QAbstractButton* p_button)
 {
-    if(instanceExist(button))
-        getTask(button)->show_window();
+    if(instance_exist(p_button))
+        get_task(p_button).show_window();
 
-    else
-    {
-        button->setIcon(QIcon(calculate_png.c_str()));
+    else {
+        p_button->setIcon(QIcon(calculate_png.c_str()));
         add_instance();
     }
 }
 
-bool MainScreen::instanceExist(QAbstractButton* button)
+bool MainScreen::instance_exist(QAbstractButton* p_button)
 {
-    int position = m_button_group->buttons().indexOf(button,0);
-
-    return ((position+1) == m_button_group->buttons().size()) ? false : true;
+    return ((get_position(p_button)+1) == m_button_group->buttons().size()) ? false : true;
 }
 
-Task* MainScreen::getTask(QAbstractButton* button)
+const Task &MainScreen::get_task(QAbstractButton* p_button)
 {
-    int position = m_button_group->buttons().indexOf(button,0);
-
-    return m_task_list[position].get();
+    return *m_task_list[get_position(p_button)];
 }
 
-
-
-
-
+int MainScreen::get_position(QAbstractButton* p_button)
+{
+    return m_button_group->buttons().indexOf(p_button,0);
+}
