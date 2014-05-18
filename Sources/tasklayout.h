@@ -8,7 +8,7 @@
 class TaskLayout : public QLayout
 {
 public:
-    TaskLayout(QWidget *parent);
+    TaskLayout(QWidget *parent, int wid);
     ~TaskLayout();
 
     void addItem(QLayoutItem *item);

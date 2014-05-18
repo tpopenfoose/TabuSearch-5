@@ -20,10 +20,8 @@ HEADERS  += \
     mainscreen.h \
     taskthread.h \
     tasklayout.h \
-    taskbuttongroup.h \
     taskbutton.h \
     task.h \
-    sharedmemory.h \
 
 SOURCES += \
     tabusearch.cpp \
@@ -32,7 +30,5 @@ SOURCES += \
     mainscreen.cpp \
     taskthread.cpp \
     tasklayout.cpp \
-    taskbuttongroup.cpp \
     taskbutton.cpp \
     task.cpp \
-    sharedmemory.cpp \

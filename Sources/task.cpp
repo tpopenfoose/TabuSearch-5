@@ -1,13 +1,12 @@
 #include "task.h"
-#include "sharedmemory.h"
 #include "tabusearch.h"
 #include <iostream>
-
-extern SharedMemory memory;
+#include <mainscreen.h>
 
 Task::Task(QObject *parent) :
     QObject(parent)
 {
+    connect(this, SIGNAL(deleted(Task*)),(MainScreen*)parent, SLOT(deleteInstance(Task*)));
     m_result = std::unique_ptr<Result>(new Result);
 
     config = new ConfigWindow();
@@ -71,12 +70,12 @@ void Task::config_Action()
 
 void Task::exit_action()
 {
-    emit exit(SharedMemory::Instance()->onlyOneButton());
+    emit exit(((MainScreen*)parent())->onlyOneButton());
 }
 
 void Task::delete_task()
 {
-    SharedMemory::Instance()->deleteInstance(this);
+    emit deleted(this);
 }
 
 void Task::show_window(void)

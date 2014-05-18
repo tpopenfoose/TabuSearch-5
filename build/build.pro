@@ -3,8 +3,10 @@
 }
 
 INCLUDEPATH =+ \
-    ../Sources
-    ../Shapes
+    ../Sources \
+    ../Shapes \
+    ../config_tab \
+    ../task_main_window
 
 TEMPLATE = app
 SOURCES += main.cpp

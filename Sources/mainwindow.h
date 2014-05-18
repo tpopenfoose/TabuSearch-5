@@ -1,13 +1,14 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui>
+#include <QMenu>
+#include <QAction>
 #include <QMainWindow>
+#include <mainscreen.h>
+#include <memory>
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-
     public:
 
         MainWindow(QWidget *parent = 0);
@@ -17,6 +18,7 @@ class MainWindow : public QMainWindow
         QMenu *mainMenu;
         QMenu *helpMenu;
         QAction *quitAction;
+        std::unique_ptr<MainScreen> m_mainscreen;
 
         void create_connections(void);
         void create_menuBar(void);
@@ -24,12 +26,6 @@ class MainWindow : public QMainWindow
 
     protected:
         void closeEvent(QCloseEvent *);
-
-    signals:
-
-       void start_TabuSearch(void);
-       void set_screen(int num);
-       void send(QString);
 };
 
 #endif // MAINWINDOW_H

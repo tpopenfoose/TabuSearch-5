@@ -2,14 +2,11 @@
 #include "taskthread.h"
 #include "inserter.h"
 #include "task.h"
-#include "sharedmemory.h"
 #include "generator.h"
 
 #include <iostream>
 
 using namespace std;
-
-extern SharedMemory memory;
 
 TabuSearch::TabuSearch(TaskThread *parent) :
     QObject()

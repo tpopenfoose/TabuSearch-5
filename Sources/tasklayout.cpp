@@ -1,17 +1,12 @@
 #include "tasklayout.h"
-#include "sharedmemory.h"
 
 #include <iostream>
 
-//extern SharedMemory memory;
-
 using namespace std;
 
-TaskLayout::TaskLayout(QWidget *parent)
+TaskLayout::TaskLayout(QWidget *parent, int wid)
     : QLayout(parent)
 {
-    //int wid = memory.getScreenSize().width()-17;
-    int wid = SharedMemory::Instance()->getScreenSize().width()-17;
     int column_count = (wid)/200;
     int margin = 10;
     space = (wid-(column_count*200)-(2*margin))/(column_count-1);

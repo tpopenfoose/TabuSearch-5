@@ -40,6 +40,7 @@ signals:
 
     void finished(int p_action);
     void exit(bool);
+    void deleted(Task*);
     
 public slots:
     

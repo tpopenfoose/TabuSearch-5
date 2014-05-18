@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "sharedmemory.h"
 #include "files.h"
 
 #include <QAction>
@@ -10,8 +9,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    SharedMemory::Instance()->readScreenSize();
-    SharedMemory::Instance()->initMainWindow(this);
+    m_mainscreen.reset(new MainScreen(this));
+    setCentralWidget(m_mainscreen.get());
 
     create_actions();
 
