@@ -11,9 +11,9 @@ Generator::Generator()
 {
 }
 
-std::vector<std::shared_ptr<Shape> > Generator::generate(const Result &p_result)
+std::vector<std::shared_ptr<Shape> > Generator::generate(const ConfigData& p_data)
 {
-    int l_shapes_count = calculate_shapes_count(p_result);
+    int l_shapes_count = calculate_shapes_count(p_data);
 
     return generate_vector(l_shapes_count);
 }
@@ -27,19 +27,19 @@ std::vector<std::shared_ptr<Shape> > Generator::generate_vector(int p_shapes_cou
         switch(qrand() % 4)
         {
             case 0: {
-                vector.push_back(std::shared_ptr<Shape>(new Triangle()));
+                vector.emplace_back(std::make_shared<Triangle>());
             } break;
 
             case 1: {
-                vector.push_back(std::shared_ptr<Shape>(new Rectangle()));
+                vector.emplace_back(std::make_shared<Rectangle>());
             } break;
 
             case 2: {
-                vector.push_back(std::shared_ptr<Shape>(new Circle()));
+                vector.emplace_back(std::make_shared<Circle>());
             } break;
 
             case 3: {
-                vector.push_back(std::shared_ptr<Shape>(new Square()));
+                vector.emplace_back(std::make_shared<Square>());
             } break;
         }
     }
@@ -47,10 +47,10 @@ std::vector<std::shared_ptr<Shape> > Generator::generate_vector(int p_shapes_cou
     return vector;
 }
 
-int Generator::calculate_shapes_count(const Result &p_result)
+int Generator::calculate_shapes_count(const ConfigData& p_data)
 {
-    int l_column_count = calculate_column_count(p_result.get_width(), p_result.get_size());
-    int l_line_count = calculate_line_count(p_result.get_height(), p_result.get_size());
+    int l_column_count = calculate_column_count(p_data.width, p_data.size);
+    int l_line_count = calculate_line_count(p_data.height, p_data.size);
 
     return l_column_count * l_line_count + (l_column_count*l_line_count)/2;
 }

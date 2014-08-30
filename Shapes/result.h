@@ -23,10 +23,12 @@ public:
     virtual int get_iteration();
     virtual int get_tabutime();
     virtual int get_procent() const;
+
+    ConfigData m_data;
 private:
     std::vector<std::shared_ptr<Shape>> m_result;
     int m_range;
-    ConfigData m_data;
+
 };
 
 #endif // RESULT_H
