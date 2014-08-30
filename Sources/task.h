@@ -18,7 +18,7 @@ public:
     virtual ~Task();
 private:
     QFile *file;
-    std::unique_ptr<Result> m_result;
+    std::shared_ptr<Result> m_result;
     ConfigWindow *config;
     TaskMainWindow *mainwindow;
     TaskThread *taskthread;

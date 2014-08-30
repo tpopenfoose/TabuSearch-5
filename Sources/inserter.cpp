@@ -85,9 +85,9 @@ void Inserter::delete_grids()
     delete [] f_grid;
 }
 
-std::unique_ptr<Result> Inserter::insert(std::unique_ptr<Result> p_result)
+std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result)
 {
-    m_result = std::move(p_result);
+    m_result = p_result;
     init_insert();
     input = m_result->getAll();
     Pair l_coordinates;
@@ -104,8 +104,7 @@ std::unique_ptr<Result> Inserter::insert(std::unique_ptr<Result> p_result)
     //insert_end();
     m_result->set_result(input, counter);
     delete_grids();
-    p_result = std::move(m_result);
-    return p_result;
+    return m_result;
 }
 
 Pair Inserter::calculate_position(std::shared_ptr<Shape> s)

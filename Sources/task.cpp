@@ -29,18 +29,18 @@ Task::Task(QObject *parent) :
 void Task::random_Action()
 {
     m_result->set_data(config->getConfigData());
-    taskthread->start_thread(std::move(m_result), 1);
+    taskthread->start_thread(m_result, 1);
 }
 
 void Task::start_Action()
 {
     m_result->set_data(config->getConfigData());
-    taskthread->start_thread(std::move(m_result), 2);
+    taskthread->start_thread(m_result, 2);
 }
 
 void Task::thread_finished(int p_action)
 {
-    m_result = std::move(taskthread->get_result());
+    m_result = taskthread->get_result();
     switch (p_action)
     {
         case 1:

@@ -21,11 +21,11 @@ void TabuSearch::clear(void)
 
 }
 
-std::unique_ptr<Result> TabuSearch::generateFirstResult(std::unique_ptr<Result> p_result)
+std::shared_ptr<Result> TabuSearch::generateFirstResult(std::shared_ptr<Result> p_result)
 {
     Generator gen;
     p_result->set_result(gen.generate(p_result->m_data));
-    p_result = std::move(inserter->insert(std::move(p_result)));
+    p_result = inserter->insert(p_result);
     return p_result;
 }
 
@@ -66,9 +66,9 @@ int TabuSearch::wasteSum(std::vector<std::shared_ptr<Shape>> v)
    return 100*p;
 }
 
-std::unique_ptr<Result> TabuSearch::optimized(std::unique_ptr<Result> p_result)
+std::shared_ptr<Result> TabuSearch::optimized(std::shared_ptr<Result> p_result)
 {
-    m_result = std::move(p_result);
+    m_result = p_result;
     calculateFigures();
     TabuList.reserve(m_result->get_tabusize());
 
@@ -129,8 +129,7 @@ std::unique_ptr<Result> TabuSearch::optimized(std::unique_ptr<Result> p_result)
     clear();
     emit stats(1,1,timer.elapsed());
 
-    p_result = std::move(m_result);
-    return p_result;
+    return m_result;
 }
 
 void TabuSearch::permutate(void)
@@ -171,9 +170,9 @@ void TabuSearch::permutate(void)
 
         Baza_input.push_back(input);
 
-        std::unique_ptr<Result> temp_result(new Result(*m_result));
+        std::shared_ptr<Result> temp_result(new Result(*m_result));
         temp_result->set_result(input);
-        temp_result = std::move(inserter->insert(std::move(temp_result)));
+        temp_result = inserter->insert(temp_result);
 
         Baza_output.push_back(temp_result->getResult());
     }
@@ -213,9 +212,9 @@ void TabuSearch::tabulist_calculate(void)
 
             BazaTabu_input.push_back(input);
 
-            std::unique_ptr<Result> temp_result(new Result(*m_result));
+            std::shared_ptr<Result> temp_result(new Result(*m_result));
             temp_result->set_result(input);
-            temp_result = std::move(inserter->insert(std::move(temp_result)));
+            temp_result = inserter->insert(temp_result);
 
             Baza_output.push_back(temp_result->getResult());
 

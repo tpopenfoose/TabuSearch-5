@@ -13,13 +13,13 @@ class TaskThread : public QObject
 public:
     TaskThread();
 
-    void start_thread(std::unique_ptr<Result> p_result, int p_option);
+    void start_thread(std::shared_ptr<Result> p_result, int p_option);
 
     void suspend(void);
     void resume(void);
     TabuSearch *engine;
 
-    std::unique_ptr<Result> get_result();
+    std::shared_ptr<Result> get_result();
 
 signals:
 
@@ -31,7 +31,7 @@ private:
     int m_option;
     QWaitCondition m_waitCondt;
 
-    std::unique_ptr<Result> m_result;
+    std::shared_ptr<Result> m_result;
 
 
 friend class TabuSearch;

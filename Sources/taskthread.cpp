@@ -13,10 +13,10 @@ TaskThread::TaskThread()
     m_bToSuspend = false;
 }
 
-void TaskThread::start_thread(std::unique_ptr<Result> p_result,int p_option)
+void TaskThread::start_thread(std::shared_ptr<Result> p_result,int p_option)
 {
     m_option = p_option;
-    m_result = std::move(p_result);
+    m_result = p_result;
     std::thread worker_thread(&TaskThread::run_in_thread, this);
     worker_thread.detach();
 }
@@ -26,20 +26,20 @@ void TaskThread::run_in_thread()
     switch (m_option)
     {
         case 1:
-            m_result = std::move(engine->generateFirstResult(std::move(m_result)));
+            m_result = engine->generateFirstResult(m_result);
         break;
 
         case 2:
-            m_result = std::move(engine->optimized(std::move(m_result)));
+            m_result = engine->optimized(m_result);
         break;
     }
 
     emit finished(m_option);
 }
 
-std::unique_ptr<Result> TaskThread::get_result()
+std::shared_ptr<Result> TaskThread::get_result()
 {
-    return std::move(m_result);
+    return m_result;
 }
 
 void TaskThread::suspend()
