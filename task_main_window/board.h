@@ -10,7 +10,7 @@ class Board : public QWidget
 public:
 
    Board(QWidget *parent = 0);
-   void paintBoard(const Result & p_result);
+   void paintBoard(const Result & p_result, const ConfigData &p_data);
 
 protected:
 
@@ -20,6 +20,7 @@ private:
 
    QPainter m_painter;
    Result m_result;
+   ConfigData m_data;
 };
 
 #endif // Board_H

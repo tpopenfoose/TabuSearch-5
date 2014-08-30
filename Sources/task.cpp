@@ -28,14 +28,12 @@ Task::Task(QObject *parent) :
 
 void Task::random_Action()
 {
-    m_result->set_data(config->getConfigData());
-    taskthread->start_thread(m_result, 1);
+    taskthread->start_thread(m_result, config->getConfigData(),  1);
 }
 
 void Task::start_Action()
 {
-    m_result->set_data(config->getConfigData());
-    taskthread->start_thread(m_result, 2);
+    taskthread->start_thread(m_result, config->getConfigData(), 2);
 }
 
 void Task::thread_finished(int p_action)
@@ -44,11 +42,11 @@ void Task::thread_finished(int p_action)
     switch (p_action)
     {
         case 1:
-            mainwindow->display_result(*m_result,1);
+            mainwindow->display_result(*m_result, config->getConfigData(), 1);
         break;
 
         case 2:
-            mainwindow->display_result(*m_result,2);
+            mainwindow->display_result(*m_result,config->getConfigData(), 2);
         break;
     }
 

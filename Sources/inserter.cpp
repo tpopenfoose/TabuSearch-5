@@ -1,5 +1,4 @@
-
-#include "inserter.h"
+#include <inserter.h>
 #include <math.h>
 #include <iostream>
 #include <memory>
@@ -43,8 +42,8 @@ void Inserter::init_insert(void)
 
     new_line = false;
     counter_back = false;
-    m_maximal_y = m_result->get_height()-m_result->get_size();
-    m_maximal_x = m_result->get_width()-m_result->get_size();
+    m_maximal_y = m_data.height-m_data.size;
+    m_maximal_x = m_data.width-m_data.size;
 
     init_grid();
 
@@ -54,40 +53,41 @@ void Inserter::init_insert(void)
 
 void Inserter::init_grid(void)
 {
-    grid = new bool *[m_result->get_width()];
+    grid = new bool *[m_data.width];
 
-    for( int i = 0; i < m_result->get_width(); i++ )
-        grid[i] = new bool[m_result->get_height()];
+    for( int i = 0; i < m_data.width; i++ )
+        grid[i] = new bool[m_data.height];
 
     grid_clear(0);
 
-    f_grid = new bool *[m_result->get_width()];
+    f_grid = new bool *[m_data.width];
 
-    for( int i = 0; i < m_result->get_width(); i++ )
-        f_grid[i] = new bool[m_result->get_height()];
+    for( int i = 0; i < m_data.width; i++ )
+        f_grid[i] = new bool[m_data.height];
 
     grid_clear(1);
 
-    column_count = m_result->get_width()/m_result->get_size();
-    line_count = m_result->get_height()/m_result->get_size();
+    column_count = m_data.width/m_data.size;
+    line_count = m_data.height/m_data.size;
 }
 
 void Inserter::delete_grids()
 {
-    for( int i = 0; i < m_result->get_width(); i++ )
+    for( int i = 0; i < m_data.width; i++ )
         delete [] grid[i];
 
     delete [] grid;
 
-    for( int i = 0; i < m_result->get_width(); i++ )
+    for( int i = 0; i < m_data.width; i++ )
         delete [] f_grid[i];
 
     delete [] f_grid;
 }
 
-std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result)
+std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result, const ConfigData& p_data)
 {
     m_result = p_result;
+    m_data = p_data;
     init_insert();
     input = m_result->getAll();
     Pair l_coordinates;
@@ -96,7 +96,7 @@ std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result)
     {
         l_coordinates = calculate_position(input[counter]);
         if(!counter_back && !insert_stop)
-            input[counter]->fill_grid(grid,m_result->get_size(), l_coordinates.first, l_coordinates.second);
+            input[counter]->fill_grid(grid,m_data.size, l_coordinates.first, l_coordinates.second);
 
         counter_back = false;
     }
@@ -110,8 +110,8 @@ std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result)
 Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
 {
     Pair l_coordinates;
-    l_coordinates.first = current_column*m_result->get_size();
-    l_coordinates.second = current_line*m_result->get_size();
+    l_coordinates.first = current_column*m_data.size;
+    l_coordinates.second = current_line*m_data.size;
 
     calculate_new_f_grid(s, l_coordinates);
 
@@ -298,9 +298,9 @@ Pair Inserter::fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_co
 
 void Inserter::grid_clear(bool gn)
 {
-    for ( int i = 0; i < m_result->get_width(); i++)
+    for ( int i = 0; i < m_data.width; i++)
     {
-        for( int j = 0; j < m_result->get_height(); j++)
+        for( int j = 0; j < m_data.height; j++)
         {
             if(gn)
                 f_grid[i][j] = 0;
@@ -312,15 +312,15 @@ void Inserter::grid_clear(bool gn)
 
 void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s, Pair p_coordinates)
 {
-    grid_clear(1); //clear f_grid
-    s->fill_grid(f_grid, m_result->get_size(), p_coordinates.first, p_coordinates.second);
+    grid_clear(1);
+    s->fill_grid(f_grid, m_data.size, p_coordinates.first, p_coordinates.second);
 }
 
 bool Inserter::shapes_overlines(void)
 {
-    for( int i = 0; i < m_result->get_width(); i++)
+    for( int i = 0; i < m_data.width; i++)
     {
-        for( int j = 0; j < m_result->get_height(); j++ )
+        for( int j = 0; j < m_data.height; j++ )
         {
             if( (grid[i][j] == 1) && (f_grid[i][j] == 1) )
                 return true;

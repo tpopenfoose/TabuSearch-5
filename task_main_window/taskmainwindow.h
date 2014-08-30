@@ -14,7 +14,7 @@ class TaskMainWindow : public QMainWindow
 
 public:
     explicit TaskMainWindow();
-    void display_result(const Result & p_result, int p_option);
+    void display_result(const Result & p_result, const ConfigData& p_data, int p_option);
 signals:
     void random_button_clicked();
     void start_button_clicked();

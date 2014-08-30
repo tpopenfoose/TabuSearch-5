@@ -174,20 +174,20 @@ void TaskMainWindow::thread_finished(int p_action)
     emit thread_finished();
 }
 
-void TaskMainWindow::display_result(const Result &p_result, int p_option)
+void TaskMainWindow::display_result(const Result &p_result, const ConfigData &p_data, int p_option)
 {
     switch(p_option) {
         case 1:
             m_status_box->lcd1->display((int)p_result.getResult().size());
-            m_status_box->lcd2->display(p_result.waste());
-            m_scroll_area->board1->paintBoard(p_result);
+            m_status_box->lcd2->display(p_result.waste(p_data));
+            m_scroll_area->board1->paintBoard(p_result, p_data);
             m_scroll_area->board1->show();
         break;
 
         case 2:
             m_status_box->lcd3->display((int)p_result.getResult().size());
-            m_status_box->lcd4->display(p_result.waste());
-            m_scroll_area->board2->paintBoard(p_result);
+            m_status_box->lcd4->display(p_result.waste(p_data));
+            m_scroll_area->board2->paintBoard(p_result, p_data);
             m_scroll_area->board2->show();
         break;
     }

@@ -27,7 +27,7 @@ class TabuSearch : public QObject
 public:
 
     explicit TabuSearch(TaskThread*parent = 0);
-    std::shared_ptr<Result> generateFirstResult(std::shared_ptr<Result> p_result);
+    std::shared_ptr<Result> generateFirstResult(std::shared_ptr<Result> p_result, const ConfigData &p_data);
     void clear(void);
     std::shared_ptr<Result> optimized(std::shared_ptr<Result> p_result);
 
@@ -65,6 +65,7 @@ private:
     void tabulist_calculate(void);
 
     std::shared_ptr<Result> m_result;
+    ConfigData m_data;
 
     TaskThread* TaskThreadParent;
 

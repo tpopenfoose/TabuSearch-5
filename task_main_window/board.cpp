@@ -17,16 +17,17 @@ void Board::paintEvent(QPaintEvent *)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &m_painter, this);
 
     for(auto & iter : m_result.getResult())
-        iter->draw(m_painter, m_result.get_size(), 1);
+        iter->draw(m_painter, m_data.size, 1);
 
     m_painter.end();
 }
 
-void Board::paintBoard(const Result & p_result)
+void Board::paintBoard(const Result & p_result, const ConfigData& p_data)
 {
     m_result = p_result;
+    m_data = p_data;
 
-    setFixedSize(m_result.get_width()+4,m_result.get_height()+4);
+    setFixedSize(m_data.width + 4, m_data.height + 4);
 
     update();
 

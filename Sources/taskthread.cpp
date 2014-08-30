@@ -13,10 +13,11 @@ TaskThread::TaskThread()
     m_bToSuspend = false;
 }
 
-void TaskThread::start_thread(std::shared_ptr<Result> p_result,int p_option)
+void TaskThread::start_thread(std::shared_ptr<Result> p_result, const ConfigData& p_data, int p_option)
 {
     m_option = p_option;
     m_result = p_result;
+    m_data = p_data;
     std::thread worker_thread(&TaskThread::run_in_thread, this);
     worker_thread.detach();
 }
@@ -26,7 +27,7 @@ void TaskThread::run_in_thread()
     switch (m_option)
     {
         case 1:
-            m_result = engine->generateFirstResult(m_result);
+            m_result = engine->generateFirstResult(m_result, m_data);
         break;
 
         case 2:

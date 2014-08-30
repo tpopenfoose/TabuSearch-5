@@ -33,10 +33,11 @@ public:
     explicit Inserter(QObject *parent = 0);
     ~Inserter();
 
-    std::shared_ptr<Result> insert(std::shared_ptr<Result> p_result);
+    std::shared_ptr<Result> insert(std::shared_ptr<Result> p_result, const ConfigData &p_data);
 
 private:
     std::shared_ptr<Result> m_result;
+    ConfigData m_data;
     std::vector<std::shared_ptr<Shape>> input;
 
     //std::unique_ptr<Grid> test_grid1;

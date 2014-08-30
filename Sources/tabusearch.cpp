@@ -21,11 +21,13 @@ void TabuSearch::clear(void)
 
 }
 
-std::shared_ptr<Result> TabuSearch::generateFirstResult(std::shared_ptr<Result> p_result)
+std::shared_ptr<Result> TabuSearch::generateFirstResult(std::shared_ptr<Result> p_result,
+                                                        const ConfigData& p_data)
 {
+    m_data = p_data;
     Generator gen;
-    p_result->set_result(gen.generate(p_result->m_data));
-    p_result = inserter->insert(p_result);
+    p_result->set_result(gen.generate(m_data), 0);
+    p_result = inserter->insert(p_result, m_data);
     return p_result;
 }
 
@@ -54,12 +56,12 @@ void TabuSearch::aspiration(void)
 
 int TabuSearch::wasteSum(std::vector<std::shared_ptr<Shape>> v)
 {
-   int all = m_result->get_height() * m_result->get_width();
+   int all = m_data.height * m_data.width;
 
    int sum = 0;
 
    for(auto & iter : v)
-       sum += iter->get_area(m_result->get_size());
+       sum += iter->get_area(m_data.size);
 
    float p = (float)(all-sum)/all;
 
@@ -70,7 +72,7 @@ std::shared_ptr<Result> TabuSearch::optimized(std::shared_ptr<Result> p_result)
 {
     m_result = p_result;
     calculateFigures();
-    TabuList.reserve(m_result->get_tabusize());
+    TabuList.reserve(m_data.tabusize);
 
     int min,pos,waste;
     input = m_result->getAll();
@@ -79,7 +81,7 @@ std::shared_ptr<Result> TabuSearch::optimized(std::shared_ptr<Result> p_result)
     timer.start();
     QMutex	waitMutex;
 
-    for(int i = 0; i < m_result->get_iteration(); i++)
+    for(int i = 0; i < m_data.iteration; i++)
     {
         if (TaskThreadParent->m_bToSuspend)
         {
@@ -88,7 +90,7 @@ std::shared_ptr<Result> TabuSearch::optimized(std::shared_ptr<Result> p_result)
             waitMutex.unlock();
         }
 
-        emit stats(i,m_result->get_iteration(),timer.elapsed());
+        emit stats(i,m_data.iteration,timer.elapsed());
 
         permutate();
 
@@ -157,7 +159,7 @@ void TabuSearch::permutate(void)
 
             el.pos1 = pos1;
             el.pos2 = pos2;
-            el.timeout = m_result->get_tabutime();
+            el.timeout = m_data.tabutime;
             el.k = 0;
 
             if(!tabu(el))
@@ -171,8 +173,8 @@ void TabuSearch::permutate(void)
         Baza_input.push_back(input);
 
         std::shared_ptr<Result> temp_result(new Result(*m_result));
-        temp_result->set_result(input);
-        temp_result = inserter->insert(temp_result);
+        temp_result->set_result(input, 0);
+        temp_result = inserter->insert(temp_result, m_data);
 
         Baza_output.push_back(temp_result->getResult());
     }
@@ -213,8 +215,8 @@ void TabuSearch::tabulist_calculate(void)
             BazaTabu_input.push_back(input);
 
             std::shared_ptr<Result> temp_result(new Result(*m_result));
-            temp_result->set_result(input);
-            temp_result = inserter->insert(temp_result);
+            temp_result->set_result(input, 0);
+            temp_result = inserter->insert(temp_result, m_data);
 
             Baza_output.push_back(temp_result->getResult());
 
@@ -232,12 +234,12 @@ void TabuSearch::tabulist_calculate(void)
 
 void TabuSearch::calculateFigures()
 {
-    column_count = m_result->get_width()/m_result->get_size();
+    column_count = m_data.width/m_data.size;
 
-    line_count = m_result->get_height()/m_result->get_size();
+    line_count = m_data.height/m_data.size;
 
     figures_count = column_count*line_count + (column_count*line_count)/2;
 
-    float mnoznik = (float)m_result->get_procent()/100;
+    float mnoznik = (float)m_data.procent/100;
     permutation_count = mnoznik*figures_count;
 }

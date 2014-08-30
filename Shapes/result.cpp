@@ -1,102 +1,55 @@
 #include "result.h"
 #include <iostream>
-Result::Result()
-{
-
-}
 
 Result::Result(const Result & result)
 {
-    m_data = result.m_data;
     m_range = result.m_range;
     m_result = result.m_result;
 }
 
 Result & Result::operator =(const Result & result)
 {
-    m_data = result.m_data;
     m_range = result.m_range;
     m_result = result.m_result;
 
     return *this;
 }
 
-int Result::waste() const
+int Result::waste(const ConfigData& p_data) const
 {
-   int all = m_data.height * m_data.width;
+   int all = p_data.height * p_data.width;
 
    int sum = 0;
 
    for(auto & iter : getResult())
-       sum += iter->get_area(m_data.size);
+       sum += iter->get_area(p_data.size);
 
    float p = (float)(all-sum)/all;
-
 
    return 100*p;
 }
 
-std::vector<std::shared_ptr<Shape> > Result::getResult() const
+std::vector<std::shared_ptr<Shape>> Result::getResult() const
 {
     std::vector<std::shared_ptr<Shape>> temp(m_range);
     std::copy(m_result.begin(),m_result.begin() + m_range, temp.begin());
     return temp;
 }
 
-std::vector<std::shared_ptr<Shape> > Result::getRest()
+std::vector<std::shared_ptr<Shape>> Result::getRest() const
 {
     std::vector<std::shared_ptr<Shape>> temp(m_result.size()-m_range);
     std::copy(m_result.begin() + m_range,m_result.end(), temp.begin());
     return temp;
 }
 
-std::vector<std::shared_ptr<Shape> > Result::getAll()
+std::vector<std::shared_ptr<Shape>> Result::getAll() const
 {
     return m_result;
-}
-
-void Result::set_data(ConfigData p_data)
-{
-    m_data = p_data;
 }
 
 void Result::set_result(std::vector<std::shared_ptr<Shape>> p_result, int p_range)
 {
     m_result = p_result;
     m_range = p_range;
-}
-
-int Result::get_size() const
-{
-    return m_data.size;
-}
-
-int Result::get_width() const
-{
-    return m_data.width;
-}
-
-int Result::get_height() const
-{
-    return m_data.height;
-}
-
-int Result::get_tabusize()
-{
-    return m_data.tabusize;
-}
-
-int Result::get_iteration()
-{
-    return m_data.iteration;
-}
-
-int Result::get_tabutime()
-{
-    return m_data.tabutime;
-}
-
-int Result::get_procent() const
-{
-    return m_data.procent;
 }
