@@ -2,29 +2,21 @@
 #include <gmock/gmock.h>
 #include <memory>
 
-#include <ResultMock.h>
 #include <inserter.h>
 #include <rectangle.h>
-#include <generator.h>
+
+namespace Ut
+{
 
 using namespace testing;
 
-class InserterTestSuite : public ::testing::Test
+class InserterTestSuite : public Test
 {
-public:
-    InserterTestSuite();
-
 protected:
     Inserter inserter;
-    std::shared_ptr<StrictResultMock> resultMock;
 };
 
-InserterTestSuite::InserterTestSuite()
-    :   resultMock(std::make_shared<StrictResultMock>())
-{
-}
-
-TEST_F(InserterTestSuite, test1)
+TEST_F(InserterTestSuite, shouldReturnProperShapseForGivenData)
 {
     std::shared_ptr<Shape> shp1 = std::make_shared<Rectangle>();
     std::shared_ptr<Shape> shp2 = std::make_shared<Rectangle>();
@@ -32,8 +24,9 @@ TEST_F(InserterTestSuite, test1)
     std::vector<std::shared_ptr<Shape>> result{shp1, shp2, shp3};
 
     ConfigData l_data(40,20,20,0,0,0,0);
+    Shapes l_expectedShapes = inserter.insert(result, l_data);
 
-    EXPECT_CALL(*resultMock, getAll()).WillOnce(Return(result));
-    EXPECT_CALL(*resultMock, set_result(result, 2));
-    inserter.insert(resultMock, l_data);
+    ASSERT_EQ(l_expectedShapes.second, 2);
 }
+
+} //namespace Ut

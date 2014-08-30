@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <memory>
+#include <utility>
 
 using namespace std;
 
@@ -84,12 +85,11 @@ void Inserter::delete_grids()
     delete [] f_grid;
 }
 
-std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result, const ConfigData& p_data)
+Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData& p_data)
 {
-    m_result = p_result;
     m_data = p_data;
     init_insert();
-    input = m_result->getAll();
+    input = p_shapes;
     Pair l_coordinates;
 
     for (counter=0; (counter < input.size()) && !insert_stop; counter++)
@@ -102,9 +102,8 @@ std::shared_ptr<Result> Inserter::insert(std::shared_ptr<Result> p_result, const
     }
 
     //insert_end();
-    m_result->set_result(input, counter);
     delete_grids();
-    return m_result;
+    return std::make_pair(input, counter);
 }
 
 Pair Inserter::calculate_position(std::shared_ptr<Shape> s)

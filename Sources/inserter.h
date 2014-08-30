@@ -26,6 +26,8 @@ private:
     Matrix m_grid;
 };
 
+typedef std::pair<std::vector<std::shared_ptr<Shape>>, int> Shapes;
+
 class Inserter : public QObject
 {
     Q_OBJECT
@@ -33,10 +35,9 @@ public:
     explicit Inserter(QObject *parent = 0);
     ~Inserter();
 
-    std::shared_ptr<Result> insert(std::shared_ptr<Result> p_result, const ConfigData &p_data);
+    Shapes insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData &p_data);
 
 private:
-    std::shared_ptr<Result> m_result;
     ConfigData m_data;
     std::vector<std::shared_ptr<Shape>> input;
 

@@ -27,7 +27,7 @@ class TabuSearch : public QObject
 public:
 
     explicit TabuSearch(TaskThread*parent = 0);
-    std::shared_ptr<Result> generateFirstResult(std::shared_ptr<Result> p_result, const ConfigData &p_data);
+    std::shared_ptr<Result> generateFirstResult(const ConfigData &p_data);
     void clear(void);
     std::shared_ptr<Result> optimized(std::shared_ptr<Result> p_result);
 

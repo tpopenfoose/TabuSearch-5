@@ -21,14 +21,16 @@ void TabuSearch::clear(void)
 
 }
 
-std::shared_ptr<Result> TabuSearch::generateFirstResult(std::shared_ptr<Result> p_result,
-                                                        const ConfigData& p_data)
+std::shared_ptr<Result> TabuSearch::generateFirstResult(const ConfigData& p_data)
 {
     m_data = p_data;
-    Generator gen;
-    p_result->set_result(gen.generate(m_data), 0);
-    p_result = inserter->insert(p_result, m_data);
-    return p_result;
+    Generator l_generator;
+    std::vector<std::shared_ptr<Shape>> l_shapes = l_generator.generate(m_data);
+    Shapes shapes = inserter->insert(l_shapes, m_data);
+    std::shared_ptr<Result> l_result = std::make_shared<Result>();
+    l_result->set_result(shapes.first, shapes.second);
+
+    return l_result;
 }
 
 void TabuSearch::aspiration(void)
@@ -172,9 +174,9 @@ void TabuSearch::permutate(void)
 
         Baza_input.push_back(input);
 
-        std::shared_ptr<Result> temp_result(new Result(*m_result));
-        temp_result->set_result(input, 0);
-        temp_result = inserter->insert(temp_result, m_data);
+        std::shared_ptr<Result> temp_result(new Result(*m_result));  
+        Shapes shapes = inserter->insert(temp_result->getAll(), m_data);
+        temp_result->set_result(shapes.first, shapes.second);
 
         Baza_output.push_back(temp_result->getResult());
     }
@@ -215,8 +217,8 @@ void TabuSearch::tabulist_calculate(void)
             BazaTabu_input.push_back(input);
 
             std::shared_ptr<Result> temp_result(new Result(*m_result));
-            temp_result->set_result(input, 0);
-            temp_result = inserter->insert(temp_result, m_data);
+            Shapes shapes = inserter->insert(temp_result->getAll(), m_data);
+            temp_result->set_result(shapes.first, shapes.second);
 
             Baza_output.push_back(temp_result->getResult());
 

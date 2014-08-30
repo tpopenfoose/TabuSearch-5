@@ -27,7 +27,7 @@ void TaskThread::run_in_thread()
     switch (m_option)
     {
         case 1:
-            m_result = engine->generateFirstResult(m_result, m_data);
+            m_result = engine->generateFirstResult(m_data);
         break;
 
         case 2:
