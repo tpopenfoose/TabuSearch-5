@@ -14,4 +14,6 @@ public:
     MOCK_METHOD2(set_result, void(std::vector<std::shared_ptr<Shape>>, int));
 };
 
+typedef ::testing::StrictMock<ResultMock> StrictResultMock;
+
 #endif // RESULTMOCK_H
