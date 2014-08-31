@@ -5,7 +5,7 @@
 #include <QObject>
 #include <memory>
 #include <result.h>
-#include <grid.h>
+#include <IGrid.h>
 
 #include <iostream>
 
@@ -26,8 +26,8 @@ public:
     Shapes insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData &p_data);
 
 protected:
-    std::unique_ptr<Grid> grid;
-    std::unique_ptr<Grid> f_grid;
+    std::unique_ptr<IGrid> grid;
+    std::unique_ptr<IGrid> f_grid;
 private:
     ConfigData m_data;
     std::vector<std::shared_ptr<Shape>> input;

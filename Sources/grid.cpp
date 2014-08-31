@@ -12,12 +12,17 @@ void Grid::create(int p_width, int p_height)
     clear();
 }
 
-Grid::~Grid()
+void Grid::deleteAll()
 {
     for( int i = 0; i < m_width; i++ )
         delete [] m_grid[i];
 
     delete [] m_grid;
+}
+
+Grid::~Grid()
+{
+    deleteAll();
 }
 
 void Grid::clear()

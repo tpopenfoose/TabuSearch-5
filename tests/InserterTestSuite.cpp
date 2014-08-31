@@ -81,32 +81,6 @@ TEST_F(InserterTestSuite, shouldReturnProperShapseForGivenData)
     ASSERT_EQ(l_reveivedShapes.second, l_expectedShapes.second);
 }
 
-TEST_F(InserterTestSuite, shouldReturnProperShapseForGivenData2)
-{
-    std::shared_ptr<Shape> shp1 = std::make_shared<Square>();
-    std::shared_ptr<Shape> shp2 = std::make_shared<Square>();
-    std::shared_ptr<Shape> shp3 = std::make_shared<Square>();
-    std::vector<std::shared_ptr<Shape>> result{shp1, shp2, shp3};
-
-    ConfigData l_data(40,20,20,0,0,0,0);
-    Shapes l_reveivedShapes = inserter.insert(result, l_data);
-
-    std::shared_ptr<Shape> expectedShp1 = std::make_shared<Square>();
-    expectedShp1->set_x(0);
-    expectedShp1->set_y(0);
-    std::shared_ptr<Shape> expectedShp2 = std::make_shared<Square>();
-    expectedShp2->set_x(20);
-    expectedShp2->set_y(0);
-    std::shared_ptr<Shape> expectedShp3 = std::make_shared<Square>();
-    expectedShp3->set_x(0);
-    expectedShp3->set_y(0);
-
-    Shapes l_expectedShapes{{expectedShp1, expectedShp2, expectedShp3}, 2};
-
-    EXPECT_THAT(l_reveivedShapes.first, VectorOfSharedPointersMacher(l_expectedShapes.first));
-    ASSERT_EQ(l_reveivedShapes.second, l_expectedShapes.second);
-}
-
 //TEST_F(InserterTestSuite, shouldReturnProperShapseForGivenData3)
 //{
 //    std::shared_ptr<Shape> shp1 = std::make_shared<Triangle>();

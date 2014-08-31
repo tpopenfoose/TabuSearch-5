@@ -21,7 +21,8 @@ HEADERS  += \
     tasklayout.h \
     taskbutton.h \
     task.h \
-    grid.h
+    grid.h \
+    IGrid.h
 
 SOURCES += \
     tabusearch.cpp \

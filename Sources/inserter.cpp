@@ -3,13 +3,14 @@
 #include <iostream>
 #include <memory>
 #include <utility>
+#include <grid.h>
 
 using namespace std;
 
 Inserter::Inserter(QObject *parent) :
     QObject(parent),
-    grid(std::unique_ptr<Grid>(new Grid)),
-    f_grid(std::unique_ptr<Grid>(new Grid))
+    grid(std::unique_ptr<IGrid>(new Grid)),
+    f_grid(std::unique_ptr<IGrid>(new Grid))
 {
 }
 
@@ -50,8 +51,8 @@ void Inserter::init_grid(void)
 
 void Inserter::delete_grids()
 {
-    grid.release();
-    f_grid.release();
+    grid->deleteAll();
+    f_grid->deleteAll();
 }
 
 Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData& p_data)
