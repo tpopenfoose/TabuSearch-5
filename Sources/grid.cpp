@@ -1,23 +1,17 @@
 #include "grid.h"
+#include <iostream>
 
 void Grid::create(int p_width, int p_height)
 {
     m_width = p_width;
     m_height = p_height;
-    m_grid = new bool *[m_width];
-
-    for( int i = 0; i < m_width; i++ )
-        m_grid[i] = new bool[m_height];
 
     clear();
 }
 
 void Grid::deleteAll()
 {
-    for( int i = 0; i < m_width; i++ )
-        delete [] m_grid[i];
-
-    delete [] m_grid;
+    m_grid.clear();
 }
 
 Grid::~Grid()
@@ -27,16 +21,11 @@ Grid::~Grid()
 
 void Grid::clear()
 {
-    for ( int i = 0; i < m_width; i++)
-    {
-        for( int j = 0; j < m_height; j++)
-        {
-            m_grid[i][j] = 0;
-        }
-    }
+    std::vector<int> zeros(m_height, 0);
+    m_grid = Matrix(m_width, zeros);
 }
 
-bool** Grid::getGrid()
+Matrix& Grid::getGrid()
 {
     return m_grid;
 }

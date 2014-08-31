@@ -1,4 +1,5 @@
 #include "rectangle.h"
+#include <iostream>
 
 Rectangle::Rectangle() : Shape(Qt::yellow)
 {
@@ -20,8 +21,7 @@ double Rectangle::get_area(int p_size)
     return p_size*p_size*0.66;
 }
 
-//void Rectangle::fill_grid(std::vector<std::vector<bool> > &p_grid, int p_size)
-void Rectangle::fill_grid(bool** p_grid, int p_size, int p_x, int p_y)
+void Rectangle::fill_grid(std::vector<std::vector<int>>& p_grid, int p_size, int p_x, int p_y)
 {
     m_x = p_x;
     m_y = p_y;

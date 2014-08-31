@@ -33,9 +33,7 @@ void Inserter::init_insert(void)
     counter_back = false;
     m_maximal_y = m_data.height-m_data.size;
     m_maximal_x = m_data.width-m_data.size;
-
     init_grid();
-
     grid->clear();
     f_grid->clear();
 }

@@ -12,7 +12,7 @@ public:
     MOCK_METHOD2(create, void(int, int));
     MOCK_METHOD0(deleteAll, void());
     MOCK_METHOD0(clear, void());
-    MOCK_METHOD0(getGrid, bool**());
+    MOCK_METHOD0(getGrid, Matrix&());
     MOCK_METHOD2(at, bool(int, int));
 };
 
