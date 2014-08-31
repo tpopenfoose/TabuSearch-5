@@ -18,12 +18,11 @@ double Square::get_area(int p_size)
     return p_size*p_size;
 }
 
-void Square::fill_grid(std::vector<std::vector<int>>& p_grid, int p_size, int p_x, int p_y)
+void Square::fill_grid(Matrix &p_grid, int p_size)
 {
-    m_x = p_x;
-    m_y = p_y;
-    for (int i = m_x;i<m_x+p_size;i++) {
-        for(int j = m_y;j<m_y+p_size;j++)
+    for (int i = 0; i  < p_size; i++)
+    {
+        for(int j = 0; j < p_size; j++)
             p_grid[i][j] = 1;
     }
 }

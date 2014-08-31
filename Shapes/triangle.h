@@ -8,7 +8,7 @@ public:
     Triangle();
     virtual void draw(QPainter &, int, int);
     virtual double get_area(int);
-    virtual void fill_grid(std::vector<std::vector<int>>& p_grid, int p_size, int p_x, int p_y);
+    virtual void fill_grid(Matrix& p_grid, int p_size);
 private:
     double prosta1(int, int);
     double prosta2(int, int);

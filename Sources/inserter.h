@@ -9,11 +9,7 @@
 
 #include <iostream>
 
-class Pair : public std::pair<int, int>
-{
-    using std::pair<int, int>::pair;
-};
-
+typedef std::pair<int, int> Coordinates;
 typedef std::pair<std::vector<std::shared_ptr<Shape>>, int> Shapes;
 
 class Inserter : public QObject
@@ -48,17 +44,17 @@ private:
 
     bool shapes_overlines(void);
 
-    Pair calculate_position(std::shared_ptr<Shape> s);
-    void calculate_new_f_grid(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Coordinates calculate_position(std::shared_ptr<Shape> s);
+    void calculate_new_f_grid(std::shared_ptr<Shape> s, Coordinates p_coordinates);
     void delete_grids();
-    Pair fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_non_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates);
-    Pair fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates);
+    Coordinates fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_non_overlaping_shape(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_overlaping_shape(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Coordinates p_coordinates);
+    Coordinates fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Coordinates p_coordinates);
 
     void init_insert(void);
 };

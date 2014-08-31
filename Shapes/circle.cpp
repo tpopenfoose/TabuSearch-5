@@ -16,19 +16,16 @@ double Circle::get_area(int p_size)
     return 3.14*(p_size/2)*(p_size/2);
 }
 
-void Circle::fill_grid(std::vector<std::vector<int>>& p_grid, int p_size, int p_x, int p_y)
+void Circle::fill_grid(Matrix &p_grid, int p_size)
 {
-    m_x = p_x;
-    m_y = p_y;
-    for (int i = m_x;i<m_x+p_size;i++)
+    for (int i = 0; i < p_size; i++)
     {
-        for(int j = m_y;j<m_y+p_size;j++)
+        for(int j = 0; j  < p_size; j++)
         {
-            int od = sqrt( pow(j-(m_y+(p_size/2)),2) + pow(i-(m_x+(p_size/2)),2) );
+            int od = sqrt( pow(j-(p_size/2),2) + pow(i-(p_size/2),2) );
 
             if( od <= (p_size/2) )
                 p_grid[i][j] = 1;
-
         }
     }
 }

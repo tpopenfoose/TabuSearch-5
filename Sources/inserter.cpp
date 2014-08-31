@@ -58,13 +58,15 @@ Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const Conf
     m_data = p_data;
     init_insert();
     input = p_shapes;
-    Pair l_coordinates;
-
+    Coordinates l_coordinates;
     for (counter=0; (counter < input.size()) && !insert_stop; counter++)
     {
         l_coordinates = calculate_position(input[counter]);
         if(!counter_back && !insert_stop)
-            input[counter]->fill_grid(grid->getGrid() ,m_data.size, l_coordinates.first, l_coordinates.second);
+        {
+            grid->fill_grid(input[counter]->grid(m_data.size), l_coordinates);
+            input[counter]->setCoordinates(l_coordinates);
+        }
 
         counter_back = false;
     }
@@ -74,14 +76,12 @@ Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const Conf
     return std::make_pair(input, counter);
 }
 
-Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
+Coordinates Inserter::calculate_position(std::shared_ptr<Shape> s)
 {
-    Pair l_coordinates;
+    Coordinates l_coordinates;
     l_coordinates.first = current_column*m_data.size;
     l_coordinates.second = current_line*m_data.size;
-
     calculate_new_f_grid(s, l_coordinates);
-
     if( shapes_overlines() )
         l_coordinates = fit_overlaping_shape(s, l_coordinates);
     else
@@ -91,7 +91,7 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
         if(++current_column >= column_count) {
             if( ++current_line >= line_count ) {
                 insert_stop = true;
-                return Pair(-1,-1);
+                return Coordinates(-1,-1);
             } else {
                 current_column = 0;
                 new_line = true;
@@ -109,7 +109,7 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
         if( ++current_column >= column_count ) {
             if( ++current_line >= line_count ) {
                 insert_stop = true;
-                return Pair(-1,-1);
+                return Coordinates(-1,-1);
             } else
                 current_column = 0;
         }
@@ -122,7 +122,7 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
     return l_coordinates;
 }
 
-Pair Inserter::fit_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_overlaping_shape(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     p_coordinates = fit_overlaping_shape_on_x_and_y(s, p_coordinates);
     p_coordinates = fit_overlaping_shape_on_y(s, p_coordinates);
@@ -130,7 +130,7 @@ Pair Inserter::fit_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates
     return p_coordinates;
 }
 
-Pair Inserter::fit_non_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_non_overlaping_shape(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     p_coordinates = fit_non_overlaping_shape_on_x_and_y(s, p_coordinates);
     p_coordinates = fit_non_overlaping_shape_on_y(s, p_coordinates);
@@ -138,9 +138,9 @@ Pair Inserter::fit_non_overlaping_shape(std::shared_ptr<Shape> s, Pair p_coordin
     return p_coordinates;
 }
 
-Pair Inserter::fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
-    Pair mem_coordinates = p_coordinates;
+    Coordinates mem_coordinates = p_coordinates;
 
     while( true ) {
         if( not shapes_overlines()&& (p_coordinates.first < m_maximal_x) && (p_coordinates.second < m_maximal_y) ) {
@@ -160,9 +160,9 @@ Pair Inserter::fit_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_
     return p_coordinates;
 }
 
-Pair Inserter::fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
-    Pair mem_coordinates = p_coordinates;
+    Coordinates mem_coordinates = p_coordinates;
 
     while(true) {
         if( shapes_overlines() && (p_coordinates.second < m_maximal_y) ) {
@@ -180,9 +180,9 @@ Pair Inserter::fit_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordi
     return p_coordinates;
 }
 
-Pair Inserter::fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
-    Pair mem_coordinates = p_coordinates;
+    Coordinates mem_coordinates = p_coordinates;
 
     while(true) {
         if( shapes_overlines() && (p_coordinates.first < m_maximal_x) ) {
@@ -200,7 +200,7 @@ Pair Inserter::fit_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordi
     return p_coordinates;
 }
 
-Pair Inserter::fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     while( true ) {
         if( not shapes_overlines() && (p_coordinates.first > 0) && (p_coordinates.second > 0) ) {
@@ -222,7 +222,7 @@ Pair Inserter::fit_non_overlaping_shape_on_x_and_y(std::shared_ptr<Shape> s, Pai
     return p_coordinates;
 }
 
-Pair Inserter::fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     while(true) {
         if( not shapes_overlines() && (p_coordinates.second > 0) ) {
@@ -242,7 +242,7 @@ Pair Inserter::fit_non_overlaping_shape_on_y(std::shared_ptr<Shape> s, Pair p_co
     return p_coordinates;
 }
 
-Pair Inserter::fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_coordinates)
+Coordinates Inserter::fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     while(true) {
         if( not shapes_overlines() && (p_coordinates.first > 0) ) {
@@ -263,10 +263,11 @@ Pair Inserter::fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_co
     return p_coordinates;
 }
 
-void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s, Pair p_coordinates)
+void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s, Coordinates p_coordinates)
 {
     f_grid->clear();
-    s->fill_grid(f_grid->getGrid(), m_data.size, p_coordinates.first, p_coordinates.second);
+    f_grid->fill_grid(s->grid(m_data.size), p_coordinates);
+    s->setCoordinates(p_coordinates);
 }
 
 bool Inserter::shapes_overlines(void)

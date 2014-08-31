@@ -32,3 +32,17 @@ void Shape::set_y(int p_y)
 {
     m_y = p_y;
 }
+
+Matrix Shape::grid(int p_size)
+{
+    std::vector<int> zeroes(p_size, 0);
+    Matrix grid(p_size, zeroes);
+    fill_grid(grid, p_size);
+    return grid;
+}
+
+void Shape::setCoordinates(Coordinates p_coordinates)
+{
+    m_x = p_coordinates.first;
+    m_y = p_coordinates.second;
+}

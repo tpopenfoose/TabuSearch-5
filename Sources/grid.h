@@ -10,6 +10,7 @@ public:
     virtual void clear();
     virtual Matrix& getGrid();
     virtual bool at(int i, int j);
+    virtual void fill_grid(std::vector<std::vector<int>> p_grid, Coordinates p_coordinates);
 
     virtual ~Grid();
 
