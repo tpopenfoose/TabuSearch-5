@@ -1,7 +1,10 @@
-#ifndef SHAPEMOCK_H
-#define SHAPEMOCK_H
+#pragma once
+
 #include <gmock/gmock.h>
 #include "shape.h"
+
+namespace Ut
+{
 
 class ShapeMock : public Shape
 {
@@ -13,4 +16,6 @@ public:
     MOCK_METHOD1(set_y, void(int));
 };
 
-#endif // SHAPEMOCK_H
+typedef ::testing::StrictMock<ShapeMock> StrictShapeMock;
+
+} //namespace Ut

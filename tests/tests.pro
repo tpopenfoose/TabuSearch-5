@@ -19,4 +19,5 @@ CONFIG += c++11
 HEADERS += \
     ResultMock.h \
     GeneretorMock.h \
-    ShapeMock.h
+    ShapeMock.h \
+    GridMock.h

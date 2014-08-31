@@ -1,0 +1,20 @@
+#pragma once
+
+#include <gmock/gmock.h>
+#include <grid.h>
+
+namespace Ut
+{
+
+class GridMock : public Grid
+{
+public:
+    MOCK_METHOD2(create, void(int, int));
+    MOCK_METHOD0(clear, void());
+    MOCK_METHOD0(getGrid, bool**());
+    MOCK_METHOD2(at, bool(int, int));
+};
+
+typedef ::testing::StrictMock<GridMock> StrictGridMock;
+
+} //namespace Ut

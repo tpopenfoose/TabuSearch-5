@@ -6,23 +6,10 @@
 
 using namespace std;
 
-Grid::Grid(int width, int height)
-{
-    m_grid = Matrix(height, std::vector<bool>(width,false));
-    //std::cout<<"m_grid.size(): "<<m_grid.size()<<std::endl;
-}
-bool Grid::operator==(const Grid& p_grid)
-{
-    return m_grid == p_grid.m_grid ? true : false;
-}
-
-Matrix & Grid::data() {
-    return m_grid;
-}
-
-
 Inserter::Inserter(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    grid(std::unique_ptr<Grid>(new Grid)),
+    f_grid(std::unique_ptr<Grid>(new Grid))
 {
 }
 
@@ -48,25 +35,14 @@ void Inserter::init_insert(void)
 
     init_grid();
 
-    grid_clear(0);
-    grid_clear(1);
+    grid->clear();
+    f_grid->clear();
 }
 
 void Inserter::init_grid(void)
 {
-    grid = new bool *[m_data.width];
-
-    for( int i = 0; i < m_data.width; i++ )
-        grid[i] = new bool[m_data.height];
-
-    grid_clear(0);
-
-    f_grid = new bool *[m_data.width];
-
-    for( int i = 0; i < m_data.width; i++ )
-        f_grid[i] = new bool[m_data.height];
-
-    grid_clear(1);
+    grid->create(m_data.width, m_data.height);
+    f_grid->create(m_data.width, m_data.height);
 
     column_count = m_data.width/m_data.size;
     line_count = m_data.height/m_data.size;
@@ -74,15 +50,8 @@ void Inserter::init_grid(void)
 
 void Inserter::delete_grids()
 {
-    for( int i = 0; i < m_data.width; i++ )
-        delete [] grid[i];
-
-    delete [] grid;
-
-    for( int i = 0; i < m_data.width; i++ )
-        delete [] f_grid[i];
-
-    delete [] f_grid;
+    grid.release();
+    f_grid.release();
 }
 
 Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData& p_data)
@@ -96,7 +65,7 @@ Shapes Inserter::insert(std::vector<std::shared_ptr<Shape>> p_shapes, const Conf
     {
         l_coordinates = calculate_position(input[counter]);
         if(!counter_back && !insert_stop)
-            input[counter]->fill_grid(grid,m_data.size, l_coordinates.first, l_coordinates.second);
+            input[counter]->fill_grid(grid->getGrid() ,m_data.size, l_coordinates.first, l_coordinates.second);
 
         counter_back = false;
     }
@@ -149,7 +118,7 @@ Pair Inserter::calculate_position(std::shared_ptr<Shape> s)
 
     new_line = false;
 
-    grid_clear(1);
+    f_grid->clear();
 
     return l_coordinates;
 }
@@ -295,24 +264,10 @@ Pair Inserter::fit_non_overlaping_shape_on_x(std::shared_ptr<Shape> s, Pair p_co
     return p_coordinates;
 }
 
-void Inserter::grid_clear(bool gn)
-{
-    for ( int i = 0; i < m_data.width; i++)
-    {
-        for( int j = 0; j < m_data.height; j++)
-        {
-            if(gn)
-                f_grid[i][j] = 0;
-            else
-              grid[i][j] = 0;
-        }
-    }
-}
-
 void Inserter::calculate_new_f_grid(std::shared_ptr<Shape> s, Pair p_coordinates)
 {
-    grid_clear(1);
-    s->fill_grid(f_grid, m_data.size, p_coordinates.first, p_coordinates.second);
+    f_grid->clear();
+    s->fill_grid(f_grid->getGrid(), m_data.size, p_coordinates.first, p_coordinates.second);
 }
 
 bool Inserter::shapes_overlines(void)
@@ -321,7 +276,7 @@ bool Inserter::shapes_overlines(void)
     {
         for( int j = 0; j < m_data.height; j++ )
         {
-            if( (grid[i][j] == 1) && (f_grid[i][j] == 1) )
+            if( (grid->at(i,j) == 1) && (f_grid->at(i,j) == 1) )
                 return true;
         }
     }

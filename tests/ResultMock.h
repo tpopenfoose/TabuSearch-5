@@ -1,8 +1,10 @@
-#ifndef RESULTMOCK_H
-#define RESULTMOCK_H
+#pragma once
 
 #include <gmock/gmock.h>
 #include "result.h"
+
+namespace Ut
+{
 
 class ResultMock : public Result
 {
@@ -16,4 +18,4 @@ public:
 
 typedef ::testing::StrictMock<ResultMock> StrictResultMock;
 
-#endif // RESULTMOCK_H
+} //namespace Ut

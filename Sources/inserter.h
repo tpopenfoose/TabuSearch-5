@@ -4,26 +4,14 @@
 #include <QVector>
 #include <QObject>
 #include <memory>
-#include "result.h"
+#include <result.h>
+#include <grid.h>
 
 #include <iostream>
-using Matrix = std::vector<std::vector<bool>>;
-//using Pair=std::pair<int, int>;
 
 class Pair : public std::pair<int, int>
 {
     using std::pair<int, int>::pair;
-};
-
-class Grid
-{
-public:
-    Grid(int width, int height);
-    bool operator==(const Grid& p_grid);
-    Matrix & data();
-
-private:
-    Matrix m_grid;
 };
 
 typedef std::pair<std::vector<std::shared_ptr<Shape>>, int> Shapes;
@@ -37,14 +25,12 @@ public:
 
     Shapes insert(std::vector<std::shared_ptr<Shape>> p_shapes, const ConfigData &p_data);
 
+protected:
+    std::unique_ptr<Grid> grid;
+    std::unique_ptr<Grid> f_grid;
 private:
     ConfigData m_data;
     std::vector<std::shared_ptr<Shape>> input;
-
-    //std::unique_ptr<Grid> test_grid1;
-    //std::unique_ptr<Grid> test_grid2;
-    bool** grid;
-    bool** f_grid;
 
     int m_maximal_y;
     int m_maximal_x;
@@ -59,7 +45,6 @@ private:
     int line_count;
 
     void init_grid(void);
-    void grid_clear(bool);
 
     bool shapes_overlines(void);
 
